@@ -1,0 +1,16 @@
+/* line 1, ../sass/screen.scss */
+.demo-card-wide.mdl-card {
+  width: 512px;
+}
+
+/* line 4, ../sass/screen.scss */
+.demo-card-wide > .mdl-card__title {
+  color: #fff;
+  height: 176px;
+  background: url("../images/welcome_card.jpg") center/cover;
+}
+
+/* line 9, ../sass/screen.scss */
+.demo-card-wide > .mdl-card__menu {
+  color: #fff;
+}
