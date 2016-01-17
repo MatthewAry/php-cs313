@@ -1,14 +1,85 @@
 /* line 2, ../sass/screen.scss */
+body {
+  background-color: #E0E0E0;
+}
+
+/* line 5, ../sass/screen.scss */
+.main {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+}
+
+/* line 11, ../sass/screen.scss */
+body.home .card-wide {
+  margin-top: -328px;
+}
+/* line 13, ../sass/screen.scss */
+body.home .card-wide > .mdl-card__title {
+  background: url("../images/RachelAndMe.jpg") center/cover;
+  height: 200px;
+  color: #fff;
+}
+
+/* line 21, ../sass/screen.scss */
+body.assignments .card-wide {
+  margin-top: -136px;
+}
+/* line 23, ../sass/screen.scss */
+body.assignments .card-wide > .mdl-card__title {
+  background: url("../images/runningmonster.jpg") center no-repeat;
+  height: 200px;
+}
+
+/* line 29, ../sass/screen.scss */
+.card-wide {
+  margin-left: -256px;
+}
+/* line 31, ../sass/screen.scss */
 .card-wide.mdl-card {
   width: 512px;
 }
-/* line 5, ../sass/screen.scss */
+/* line 34, ../sass/screen.scss */
 .card-wide > .mdl-card__title {
-  color: #fff;
-  height: 200px;
-  background: url("../images/RachelAndMe.jpg") center/cover;
+  position: relative;
 }
-/* line 10, ../sass/screen.scss */
+/* line 36, ../sass/screen.scss */
+.card-wide > .mdl-card__title .read-text {
+  background-image: url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4gPHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJncmFkIiBncmFkaWVudFVuaXRzPSJvYmplY3RCb3VuZGluZ0JveCIgeDE9IjAuNSIgeTE9IjAuMCIgeDI9IjAuNSIgeTI9IjEuMCI+PHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzAwMDAwMCIgc3RvcC1vcGFjaXR5PSIwLjAiLz48c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiMwMDAwMDAiIHN0b3Atb3BhY2l0eT0iMC42NSIvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPjxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JhZCkiIC8+PC9zdmc+IA==');
+  background-size: 100%;
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(0, 0, 0, 0)), color-stop(100%, rgba(0, 0, 0, 0.65)));
+  background-image: -moz-linear-gradient(top, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.65) 100%);
+  background-image: -webkit-linear-gradient(top, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.65) 100%);
+  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.65) 100%);
+  height: 72px;
+  display: block;
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+  z-index: 5;
+  left: 0;
+}
+/* line 46, ../sass/screen.scss */
+.card-wide > .mdl-card__title .mdl-card__title-text {
+  z-index: 10;
+}
+/* line 50, ../sass/screen.scss */
 .card-wide > .mdl-card__menu {
   color: #fff;
+}
+/* line 53, ../sass/screen.scss */
+.card-wide > .mdl-card__supporting-text {
+  width: initial;
+}
+/* line 55, ../sass/screen.scss */
+.card-wide > .mdl-card__supporting-text table {
+  width: 100%;
+}
+/* line 58, ../sass/screen.scss */
+.card-wide > .mdl-card__supporting-text table td.label {
+  text-align: right;
+}
+/* line 61, ../sass/screen.scss */
+.card-wide > .mdl-card__supporting-text table td.out {
+  text-align: left;
 }

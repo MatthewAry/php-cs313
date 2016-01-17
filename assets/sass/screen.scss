@@ -1,13 +1,67 @@
+@import "compass";
+body {
+   background-color: #E0E0E0;
+}
+.main {
+   position: absolute;
+   top: 50%;
+   left: 50%;
+}
+body.home {
+   .card-wide {
+      margin-top: -328px;
+      > .mdl-card__title {
+      background: url('../images/RachelAndMe.jpg') center / cover;
+      height: 200px;
+      color: #fff;
+    }
+   }
+}
+body.assignments {
+   .card-wide {
+      margin-top: -136px;
+      > .mdl-card__title {
+        background: url('../images/runningmonster.jpg') center no-repeat;
+        height: 200px;
+     }
+   }
+}
 .card-wide{
+   margin-left: -256px;
    &.mdl-card {
      width: 512px;
    }
    > .mdl-card__title {
-     color: #fff;
-     height: 200px;
-     background: url('../images/RachelAndMe.jpg') center / cover;
+     position: relative;
+     .read-text {
+         @include background-image(linear-gradient(top,rgba(0,0,0,0) 0%, rgba(0,0,0,0.65) 100%));
+         height: 72px;
+         display: block;
+         position: absolute;
+         width: 100%;
+         bottom: 0;
+         z-index: 5;
+         left: 0;
+     }
+     .mdl-card__title-text {
+        z-index: 10;
+     }
    }
    > .mdl-card__menu {
      color: #fff;
+   }
+   > .mdl-card__supporting-text {
+      width: initial;
+      table {
+         width: 100%;
+         td {
+            &.label {
+               text-align: right;
+            }
+            &.out {
+               text-align: left;
+            }
+         }
+      }
    }
 }
