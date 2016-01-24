@@ -39,7 +39,7 @@
          <div flex layout="row" layout-padding>
             <md-input-container>
                <label>Size</label>
-               <md-select ng-model="formData.size">
+               <md-select ng-model="formData.pizza.size">
                   <md-option ng-repeat="size in sizes" ng-value="size">{{size}}
                   </md-option>
                </md-select>
@@ -51,7 +51,7 @@
                   <legend>{{topping.category}}</legend>
                   <div flex layout-wrap>
                      <div flex="50" ng-repeat="option in topping.options">
-                        <md-checkbox ng-model="tSelect">{{option.name}}</md-checkbox>
+                        <md-checkbox checklist-model="formData.pizza.toppings" checklist-value="option.name">{{option.name}}</md-checkbox>
                      </div>
                   </div>
                </fieldset>
@@ -63,8 +63,8 @@
          <div layout="row" layout-padding>
             <div flex="100" flex-gt-sm="50" layout="column">
                <div layout="row" layout-wrap flex>
-                  <div flex="50" ng-repeat="option in languages">
-                     <md-checkbox ng-model="lSelect" value={{}}>{{option.name}}</md-checkbox>
+                  <div flex="50" ng-repeat="language in languages">
+                     <md-checkbox checklist-model="formData.languages" checklist-value="language.name">{{language.name}}</md-checkbox>
                   </div>
                </div>
             </div>
@@ -76,11 +76,11 @@
    <script src="node_modules/angular-aria/angular-aria.js"></script>
    <script src="node_modules/angular-animate/angular-animate.js"></script>
    <script src="node_modules/angular-material/angular-material.js"></script>
-   <script src="bower_components/ngSticky/dist/sticky.min.js"></script>
+   <script src="assets/scripts/checklist-model.js"></script>
    <script>
 
    // Include app dependency on ngMaterial
-   var myApp = angular.module( 'myApp', [ 'ngMaterial'] );
+   var myApp = angular.module( 'myApp', [ 'ngMaterial', 'checklist-model'] );
    myApp.controller("SurveyController", function($scope, $http) {
       $scope.animals = {
          "Red-lipped Batfish": "assets/images/21-More-Weird-Animals-You-Never-Knew-Existed.jpg",
@@ -105,10 +105,10 @@
          "Sea Pig": "assets/images/21-More-Weird-Animals-You-Never-Knew-Existed-22.jpg",
          "Pikachu": "assets/images/025Pikachu_OS_anime_5.png"};
       $scope.sizes = [
-         "small (12-inch)",
-         "medium (14-inch)",
-         "large (16-inch)",
-         "insane (42-inch)"];
+         "Small (12-inch)",
+         "Medium (14-inch)",
+         "Large (16-inch)",
+         "Insane (42-inch)"];
       $scope.toppings = [
          { category: 'Cheese', options: [
             { name: 'Mozzarella' },
@@ -133,7 +133,7 @@
             { name: 'Green Olives' }
          ]},
          { category: 'Fruit', options: [
-            { name: 'Pinapple' }
+            { name: 'Pineapple' }
          ]}
       ];
       $scope.languages = [
@@ -163,9 +163,6 @@
       $scope.$watch('aSelected', function(v) {
          $scope.formData.animal = v;
       })
-      $scope.toggleSelection = function toggleSelection(type, value) {
-         $scope.formData[type]
-      }
       $scope.submit = function() {
          $http({
             method   : 'POST',
@@ -176,13 +173,9 @@
          .success(function(data) {
             console.log(data);
          })
-
       };
    }
 );
-
-
-
 </script>
 
 </body>
