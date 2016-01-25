@@ -1,10 +1,20 @@
+<?php
+session_start();
+
+if(isset($_SESSION['voted']) && $_SESSION['voted'] == true) {
+    header("Location: report.php");
+    exit;
+}
+
+?>
 <!DOCTYPE html>
 <html>
 <head>
    <title>Matthew's Survey</title>
-   <link rel="stylesheet" href="assets/stylesheets/screen.css" media="screen" charset="utf-8">
    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
-   <link rel="stylesheet" href="node_modules/angular-material/angular-material.css">
+   <link rel="stylesheet" href=
+	"http://ajax.googleapis.com/ajax/libs/angular_material/1.0.0/angular-material.min.css">
+   <link rel="stylesheet" href="assets/stylesheets/screen.css" media="screen" charset="utf-8">
    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
 </head>
 <body ng-app="myApp" ng-cloak>
@@ -13,54 +23,80 @@
          <md-toolbar class="md-primary">
             <div class="md-toolbar-tools">
                <h1 class="md-display-1">Matthew's Survey</h1>
+               <span flex></span>
+               <md-button class="md-raised" aria-label="See Survey Results" href="report.php">
+                  See Survey Results
+               </md-button>
             </div>
          </md-toolbar>
-            <div layout="row" layout-padding>
-               <md-content layout="column" flex>
-                  <h2 class="md-title">Which animal is cooler?</h2>
-                  <md-radio-group ng-model="aSelected" class="md-primary">
-                     <div ng-repeat="(key, value) in animals">
-                        <md-radio-button ng-value="key" aria-label="key">
-                           {{key}}
-                        </md-radio-button>
-                     </div>
-                  </md-radio-group>
-               </md-content>
-               <md-content layout="column" class="animal-image-content" flex>
-                  <div class="flex-box" id="fixed">
-                     <img ng-hide="!aSelected" ng-src="{{animals[aSelected]}}" style="max-width: 100%; width: auto; height: auto;" />
+         <md-toolbar class="md-accent md-hue-3">
+            <span flex></span>
+            <h2 class="md-toolbar-tools md-toolbar-tools-bottom">
+               <span class="md-flex">Which animal is cooler?</span>
+            </h2>
+         </md-toolbar>
+         <div layout="row" layout-padding>
+            <md-card layout-padding>
+               <md-radio-group ng-model="aSelected" class="md-primary">
+                  <div ng-repeat="(key, value) in animals">
+                     <md-radio-button ng-value="key" aria-label="key">
+                        {{key}}
+                     </md-radio-button>
                   </div>
-               </md-content>
+               </md-radio-group>
+            </md-card>
+            <div layout="column" class="animal-image-content" flex>
+               <div class="flex-box" id="fixed">
+                  <img ng-hide="!aSelected" ng-src="{{animals[aSelected]}}" style="max-width: 100%; width: auto; height: auto;" />
+               </div>
             </div>
-         <md-content>
-            <h2 class="md-title">How do you like your pizza?</h2>
-         </md-content>
-
+         </div>
+         <md-toolbar class="md-accent md-hue-3">
+            <span flex></span>
+            <h2 class="md-toolbar-tools md-toolbar-tools-bottom">
+               <span class="md-flex">How do you like your pizza?</span>
+            </h2>
+         </md-toolbar>
          <div flex layout="row" layout-padding>
-            <md-input-container>
-               <label>Size</label>
-               <md-select ng-model="formData.pizza.size">
-                  <md-option ng-repeat="size in sizes" ng-value="size">{{size}}
-                  </md-option>
-               </md-select>
-            </md-input-container>
+            <md-card layout-padding>
+               <md-card-title>
+                  <md-card-title-text>
+                     <span class="md-headline">Pizza Size</span>
+                  </md-card-title>
+               </md-card-title-text>
+               <md-input-container>
+                  <label>Size</label>
+                  <md-select ng-model="formData.pizza.size">
+                     <md-option ng-repeat="size in sizes" ng-value="size">{{size}}
+                     </md-option>
+                  </md-select>
+               </md-input-container>
+            </md-card>
          </div>
          <div layout="row" layout-padding>
-            <div flex layout="column" ng-repeat="topping in toppings">
-               <fieldset>
-                  <legend>{{topping.category}}</legend>
+            <div layout="column" ng-repeat="topping in toppings">
+               <md-card layout-padding>
+                  <md-card-title>
+                     <md-card-title-text>
+                        <span class="md-headline">{{topping.category}}</span>
+                     </md-card-title>
+                  </md-card-title-text>
                   <div flex layout-wrap>
                      <div flex="50" ng-repeat="option in topping.options">
                         <md-checkbox checklist-model="formData.pizza.toppings" checklist-value="option.name">{{option.name}}</md-checkbox>
                      </div>
                   </div>
-               </fieldset>
+               </md-card>
             </div>
          </div>
-         <md-content>
-            <h2 class="md-title">What programming languages do you know?</h2>
-         </md-content>
+         <md-toolbar class="md-accent md-hue-3">
+            <span flex></span>
+            <h2 class="md-toolbar-tools md-toolbar-tools-bottom">
+               <span class="md-flex">What programming languages do you know?</span>
+            </h2>
+         </md-toolbar>
          <div layout="row" layout-padding>
+            <md-card layout-padding>
             <div flex="100" flex-gt-sm="50" layout="column">
                <div layout="row" layout-wrap flex>
                   <div flex="50" ng-repeat="language in languages">
@@ -68,14 +104,19 @@
                   </div>
                </div>
             </div>
+         </md-card>
          </div>
          <md-button class="md-raised" ng-click="submit()"> Submit </md-button>
       </form>
    </div>
-   <script src="node_modules/angular/angular.js"></script>
-   <script src="node_modules/angular-aria/angular-aria.js"></script>
-   <script src="node_modules/angular-animate/angular-animate.js"></script>
-   <script src="node_modules/angular-material/angular-material.js"></script>
+   <!-- Angular Material requires Angular.js Libraries -->
+   <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+   <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-animate.min.js"></script>
+   <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-aria.min.js"></script>
+   <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-messages.min.js"></script>
+
+   <!-- Angular Material Library -->
+   <script src="http://ajax.googleapis.com/ajax/libs/angular_material/1.0.0/angular-material.min.js"></script>
    <script src="assets/scripts/checklist-model.js"></script>
    <script>
 
@@ -171,7 +212,7 @@
             headers  : {'Content-Type': 'application/x-www-form-urlencoded' }
          })
          .success(function(data) {
-            console.log(data);
+            window.location.href = "report.php";
          })
       };
    }

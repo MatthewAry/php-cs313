@@ -1,6 +1,6 @@
 <?php
-print_r($_POST);
-
+session_start();
+$_SESSION['voted'] = true;
 $path = "submissions.json";
 
 if (file_exists($path)) {
