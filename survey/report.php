@@ -17,10 +17,6 @@
       <md-toolbar class="md-primary">
          <div class="md-toolbar-tools">
             <h1 class="md-display-1">Survey Report: There have been {{submissions}} submission(s).</h1>
-            <span flex></span>
-            <md-button class="md-raised" aria-label="Go To Survey" href="index.php">
-               Go To Survey
-            </md-button>
          </div>
       </md-toolbar>
 		<div layout="row" layout-padding>
