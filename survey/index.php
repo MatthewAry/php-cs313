@@ -165,7 +165,9 @@ if(isset($_SESSION['voted']) && $_SESSION['voted'] == true) {
             { name: 'Pepperoni' },
             { name: 'Sausage' },
             { name: 'Ground Beef' },
-            { name: 'Bacon' }
+            { name: 'Bacon' },
+            { name: 'Chicken' },
+            { name: 'Canadian Bacon' }
          ]},
          { category: 'Vegetables', options: [
             { name: 'Mushrooms' },
