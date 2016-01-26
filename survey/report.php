@@ -16,7 +16,7 @@
 	<div ng-controller="reportController">
       <md-toolbar class="md-primary">
          <div class="md-toolbar-tools">
-            <h1 class="md-display-1">Survey Report: There has been {{submissions}} submission(s).</h1>
+            <h1 class="md-display-1">Survey Report</h1>
          </div>
       </md-toolbar>
 		<div layout="row" layout-padding>
@@ -169,7 +169,7 @@
             var appElement = document.querySelector('[ng-app=report]');
             var $scope = angular.element(appElement).scope();
             $scope.$apply(function() {
-               $scope.submissions = reportData['submissions'] / 2;
+               $scope.submissions = reportData['submissions'];
             });
 
 
