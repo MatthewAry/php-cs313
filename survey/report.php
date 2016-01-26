@@ -169,7 +169,7 @@
             var appElement = document.querySelector('[ng-app=report]');
             var $scope = angular.element(appElement).scope();
             $scope.$apply(function() {
-               $scope.submissions = reportData['submissions'];
+               $scope.submissions = reportData['submissions'] / 2;
             });
 
 
