@@ -1,13 +1,13 @@
 <?php
 class Identity
 {
-   public $id;
-   public $first_name;
-   public $middle_name;
-   public $last_name;
-   public $gender;
-   public $email;
-   public $imageURI;
+   private $id;
+   private $first_name;
+   private $middle_name;
+   private $last_name;
+   private $gender;
+   private $email;
+   private $imageURI;
 
    public function __construct($id, $first_name, $middle_name, $last_name,
                                $gender, $email, $imageURI) {
@@ -38,7 +38,7 @@ class Identity
       return $list;
    }
 
-   public static function find($id) {
+   public static function findById($id) {
       $db = Db::getInstance();
       $id = intval($id);
       $request = $db->prepare('SELECT * FROM identity WHERE id = :id');
@@ -50,5 +50,28 @@ class Identity
                               $identity['gender'], $identity['email'],
                               $identity['id_Image_uri']);
    }
+
+   public static function findByFirstName($firstName) {
+      $list = [];
+      $db = Db::getInstance();
+
+      $request = $db->prepare('SELECT * FROM identity WHERE first_name = :id');
+   }
+
+   public static function findByLastName($lastName) {
+
+   }
+
+   public static function findByName($partOne, $partTwo) {
+
+   }
+
+   // Getter
+   public function getValues() {
+      return array('id' => $id, 'firstName' => $first_name,
+                   'middleName' => $middle_name, 'lastName' => $last_name,
+                   'gender' => $gender, 'email' => $imageURI);
+   }
+
 }
 ?>
