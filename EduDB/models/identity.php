@@ -55,7 +55,8 @@ class Identity
       $list = [];
       $db = Db::getInstance();
 
-      $request = $db->prepare('SELECT * FROM identity WHERE first_name = :id');
+      $request = $db->prepare('SELECT * FROM identity WHERE first_name = '.
+                              ':firstName');
    }
 
    public static function findByLastName($lastName) {
@@ -68,9 +69,13 @@ class Identity
 
    // Getter
    public function getValues() {
-      return array('id' => $id, 'firstName' => $first_name,
-                   'middleName' => $middle_name, 'lastName' => $last_name,
-                   'gender' => $gender, 'email' => $imageURI);
+      return array('id' => $this->id,
+                   'firstName' => $this->first_name,
+                   'middleName' => $this->middle_name,
+                   'lastName' => $this->last_name,
+                   'gender' => $this->gender,
+                   'email' => $this->email,
+                   'image' => $this->imageURI);
    }
 
 }

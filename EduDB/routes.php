@@ -9,6 +9,8 @@
       case 'identity':
         // we need the model to query the database later in the controller
         require_once('models/identity.php');
+        require_once('models/address.php');
+        require_once('models/school.php');
         $controller = new IdentityController();
       break;
     }

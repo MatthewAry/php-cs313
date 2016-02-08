@@ -1,5 +1,5 @@
 <?php
-class Iclass
+class Sclass
 {
    public $id;
    public $teacher_id;
@@ -34,7 +34,9 @@ class Iclass
       return new Iclass($class['idClass'], $class['Teacher_id'],
                         $class['GradeLevel_id'], $class['Name']);
    }
-   
+
+
+
 }
 
 ?>
