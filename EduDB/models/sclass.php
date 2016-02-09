@@ -18,7 +18,7 @@ class Sclass
       $db = Db::getInstance();
       $request = $db->query('SELECT * FROM class');
       foreach ($request->fetchAll as $class) {
-         $list[] = new Iclass($class['idClass'], $class['Teacher_id'],
+         $list[] = new Sclass($class['idClass'], $class['Teacher_id'],
                               $class['GradeLevel_id'], $class['Name']);
       }
       return $list;
@@ -31,7 +31,7 @@ class Sclass
       $request->execute(array('id' => $id));
       $class = $request->fetch();
 
-      return new Iclass($class['idClass'], $class['Teacher_id'],
+      return new Sclass($class['idClass'], $class['Teacher_id'],
                         $class['GradeLevel_id'], $class['Name']);
    }
 

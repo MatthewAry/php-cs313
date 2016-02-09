@@ -32,7 +32,10 @@ class User {
 
    // Verify Credientials (Returns BOOL)
    public function verify($username, $password) {
-
+      $db = Db::getInstance();
+      $request = $db->prepare('SELECT ')
    }
+
+   // Get list of User
 }
  ?>
