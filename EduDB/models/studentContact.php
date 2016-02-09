@@ -13,7 +13,8 @@ class StudentContact {
 
    private function getRelationship() {
       $db = Db::getInstance();
-      $request = $db->query('SELECT Type FROM Relationship WHERE idRelationship = :id');
+      $request = $db->prepare('SELECT Type FROM Relationship '.
+                              'WHERE idRelationship = :id');
       $request->execute(array('id' => $relationshipID));
       $relationship = $request->fetch();
    }

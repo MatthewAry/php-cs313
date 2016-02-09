@@ -22,8 +22,7 @@ class School {
 
       $records = $db->query('SELECT COUNT(*) FROM school');
       $records = $records->fetchColumn();
-      $db->setAttribute(PDO::ATTR_EMULATE_PREPARES, FALSE);
-      $request = $db->prepare('SELECT * FROM school LIMIT '.
+      $request = $db->query('SELECT * FROM school LIMIT '.
                               ':start,:number');
       $request->execute(array('start' => $start, 'number' => $number));
       foreach ($request->fetchAll() as $school) {

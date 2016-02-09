@@ -28,5 +28,10 @@ class Teacher {
       return new Teacher($teacher['idTeacher'], $teacher['School_id'],
                          $teacher['Identity_id'], $teacher['details']);
    }
+
+   public function getValues() {
+      return array('id' => $id, 'schoolId' => $schoolId,
+                   'identityID' => $identityId, 'details' => $details);
+   }
 }
  ?>
