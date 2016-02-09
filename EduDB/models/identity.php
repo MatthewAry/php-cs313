@@ -24,10 +24,13 @@ class Identity
       $this->imageURI = $imageURI;
    }
 
-   public static function all() {
+   public static function all($start, $number) {
       $list = [];
       $db = Db::getInstance();
-      $request = $db->query('SELECT * FROM identity');
+      $request = $db->prepare('SELECT * FROM identity LIMIT :start, :number');
+      $request->bindParam(":start", $start, PDO::PARAM_INT);
+      $request->bindParam(":number", $number, PDO::PARAM_INT);
+      $request->execute();
 
       foreach ($request->fetchAll() as $identity) {
          $list[] = new Identity($identity['id'], $identity['first_name'],
@@ -40,9 +43,9 @@ class Identity
 
    public static function findById($id) {
       $db = Db::getInstance();
-      $id = intval($id);
       $request = $db->prepare('SELECT * FROM identity WHERE id = :id');
-      $request->execute(array('id' => $id));
+      $request->bindParam(":id", $id, PDO::PARAM_INT);
+      $request->execute();
       $identity = $request->fetch();
 
       return new Identity($identity['id'], $identity['first_name'],

@@ -8,15 +8,26 @@ class Grade {
       $this->name = $name;
    }
 
-   public static function all() {
+   public static function all($start, $number) {
       $list = [];
       $db = Db::getInstance();
-      $request = $db->query('SELECT * FROM GradeLevel');
-
+      $request = $db->prepare('SELECT * FROM GradeLevel LIMIT :start, :number');
+      $request->bindParam(":start", $start, PDO::PARAM_INT);
+      $request->bindParam(":number", $number, PDO::PARAM_INT);
+      $request->execute();
       foreach ($request->fetchAll as $grade) {
          $list[] = new Grade($grade['idGrade'], $grade['Name']);
       }
       return $list;
+   }
+
+   public static function find($id) {
+      $db = Db::getInstance();
+      $request = $db->prepare('SELECT * FROM GradeLevel WHERE idGrade = :id');
+      $request->bindParam(":id", $id, PDO::PARAM_INT);
+      $request->execute();
+      $result = $request->fetch();
+      return new Grade($result['idGrade'], $result['Name']);
    }
 
    public function getValues() {

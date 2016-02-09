@@ -15,7 +15,8 @@ class StudentContact {
       $db = Db::getInstance();
       $request = $db->prepare('SELECT Type FROM Relationship '.
                               'WHERE idRelationship = :id');
-      $request->execute(array('id' => $relationshipID));
+      $request->bindParam(":id", $id, PDO::PARAM_INT);
+      $request->execute();
       $relationship = $request->fetch();
    }
 
@@ -27,8 +28,23 @@ class StudentContact {
       getRelationship();
       getIdentity();
    }
-   // We want to refactor our DB to include an ID for the relationship table.
-   // Why? So we can look things up when and if we need to.
+
+   // Returns a list of Student Contacts
+   public static function findByStudentId($id) {
+      $list = [];
+      $db = Db::getInstance();
+      $request = $db->prepare('SELECT * FROM student_to_identity '.
+                              'WHERE Student_id = :id');
+      $request->bindParam(":id", $id, PDO::PARAM_INT);
+      $request->execute();
+      foreach ($request->fetchAll() as $result) {
+         $list[] = new StudentContact($result['id'], $result['Student_id'],
+                                   $result['Identity_id'],
+                                   $result['Relationship_id']);
+      }
+      return $list;
+   }
+
    public function getValues() {
       return array('id' => $id, 'studentID' => $studentID,
                    'identityID' => $identityID,

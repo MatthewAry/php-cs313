@@ -13,10 +13,13 @@ class Sclass
       $this->name = $name;
    }
 
-   public static function all() {
+   public static function all($start,$number) {
       $list = [];
       $db = Db::getInstance();
-      $request = $db->query('SELECT * FROM class');
+      $request = $db->prepare('SELECT * FROM class LIMIT :start, :number');
+      $request->bindParam(":start", $start, PDO::PARAM_INT);
+      $request->bindParam(":number", $number, PDO::PARAM_INT);
+      $request->execute();
       foreach ($request->fetchAll as $class) {
          $list[] = new Sclass($class['idClass'], $class['Teacher_id'],
                               $class['GradeLevel_id'], $class['Name']);
@@ -24,9 +27,8 @@ class Sclass
       return $list;
    }
 
-   public static function find($id) {
+   public static function findById($id) {
       $db = Db::getInstance();
-      $id = intval($id);
       $request = $db->prepare('SELECT * FROM class WHERE id = :id');
       $request->execute(array('id' => $id));
       $class = $request->fetch();

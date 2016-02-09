@@ -2,8 +2,7 @@
 class School {
    private $id;
    private $name;
-
-
+   
    public function __construct($id, $name) {
       $this->id = $id;
       $this->name = $name;
@@ -22,9 +21,11 @@ class School {
 
       $records = $db->query('SELECT COUNT(*) FROM school');
       $records = $records->fetchColumn();
-      $request = $db->query('SELECT * FROM school LIMIT '.
+      $request = $db->prepare('SELECT * FROM school LIMIT '.
                               ':start,:number');
-      $request->execute(array('start' => $start, 'number' => $number));
+      $request->bindParam(":start", $start, PDO::PARAM_INT);
+      $request->bindParam(":number", $number, PDO::PARAM_INT);
+      $request->execute();
       foreach ($request->fetchAll() as $school) {
          $list[] = new School($school['idSchool'], $school['Name']);
       }
@@ -35,8 +36,23 @@ class School {
       // a list of schools restricted to the
    }
 
+   // Finds a school
+   public static function find($id) {
+      $db = Db::getInstance();
+      $records = $db->prepare('SELECT * FROM school WHERE idSchool = :id');
+      $request->bindParam(":id", $id, PDO::PARAM_INT);
+      $request->execute();
+      $result = $request->fetch();
+      return new School($result['id'], $result['name']);
+   }
+
    // Gets a list of classes, grades, and teachers belonging to a school.
 
    // Gets a list of students belonging to a school.
+
+   // Get Values
+   public function getValues() {
+      return array('id' => $id, 'name' => $name);
+   }
 }
  ?>
