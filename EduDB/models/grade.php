@@ -4,7 +4,7 @@ class Grade {
    private $name;
 
    public function __construct($grade, $name) {
-      $this->grade = $grade;
+      $this->gradeId = $grade;
       $this->name = $name;
    }
 
@@ -21,7 +21,7 @@ class Grade {
       return $list;
    }
 
-   public static function find($id) {
+   public static function findById($id) {
       $db = Db::getInstance();
       $request = $db->prepare('SELECT * FROM GradeLevel WHERE idGrade = :id');
       $request->bindParam(":id", $id, PDO::PARAM_INT);
@@ -31,7 +31,7 @@ class Grade {
    }
 
    public function getValues() {
-      return array('id' => $gradeId, 'name' => $name);
+      return array('id' => $this->gradeId, 'name' => $this->name);
    }
 }
 ?>

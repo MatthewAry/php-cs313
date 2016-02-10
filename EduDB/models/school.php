@@ -2,7 +2,7 @@
 class School {
    private $id;
    private $name;
-   
+
    public function __construct($id, $name) {
       $this->id = $id;
       $this->name = $name;
@@ -37,13 +37,13 @@ class School {
    }
 
    // Finds a school
-   public static function find($id) {
+   public static function findById($id) {
       $db = Db::getInstance();
-      $records = $db->prepare('SELECT * FROM school WHERE idSchool = :id');
+      $request = $db->prepare('SELECT * FROM school WHERE idSchool = :id');
       $request->bindParam(":id", $id, PDO::PARAM_INT);
       $request->execute();
       $result = $request->fetch();
-      return new School($result['id'], $result['name']);
+      return new School($result['idSchool'], $result['Name']);
    }
 
    // Gets a list of classes, grades, and teachers belonging to a school.
@@ -52,7 +52,7 @@ class School {
 
    // Get Values
    public function getValues() {
-      return array('id' => $id, 'name' => $name);
+      return array('id' => $this->id, 'name' => $this->name);
    }
 }
  ?>

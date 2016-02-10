@@ -11,13 +11,13 @@ class StudentContact {
       $this->identity = Identity::findById($identityID);
    }
 
-   private function getRelationship() {
+   private function getRelationship($id) {
       $db = Db::getInstance();
       $request = $db->prepare('SELECT Type FROM Relationship '.
                               'WHERE idRelationship = :id');
       $request->bindParam(":id", $id, PDO::PARAM_INT);
       $request->execute();
-      $relationship = $request->fetch();
+      $this->relationship = $request->fetch();
    }
 
    public function __construct($id, $studentID, $identityID, $relationshipID) {
@@ -25,8 +25,8 @@ class StudentContact {
       $this->studentID = $studentID;
       $this->identityID = $identityID;
       $this->relationshipID = $relationshipID;
-      getRelationship();
-      getIdentity();
+      $this->getRelationship($relationshipID);
+      $this->getIdentity($identityID);
    }
 
    // Returns a list of Student Contacts
@@ -46,9 +46,11 @@ class StudentContact {
    }
 
    public function getValues() {
-      return array('id' => $id, 'studentID' => $studentID,
-                   'identityID' => $identityID,
-                   'relationshipID' => $relationshipID, 'identity' => $identity);
+      return array('id' => $this->id, 'studentID' => $this->studentID,
+                   'identityID' => $this->identityID,
+                   'relationshipID' => $this->relationshipID,
+                   'relationship' => $this->relationship,
+                   'identity' => $this->identity->getValues());
    }
 }
 

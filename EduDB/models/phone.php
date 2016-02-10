@@ -27,7 +27,8 @@
       }
 
       public function getValues() {
-         return array('id' => $id, 'number' => $number, 'type' => $type);
+         return array('id' => $this->id, 'number' => $this->number,
+                      'type' => $this->type);
       }
    }
  ?>

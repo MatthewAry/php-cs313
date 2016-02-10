@@ -27,6 +27,7 @@ class Address {
       $this->stateName = $stateName;
       $this->stateAbbv = $stateAbbv;
       $this->addressType = $addressType;
+      $this->identityId = $identityId;
    }
 
    public static function findByIdentityId($id) {
@@ -53,6 +54,21 @@ class Address {
                                $address['addressName'], $address['Identity_id']);
       }
       return $list;
+   }
+
+   public function getValues() {
+      return array(
+         'id' => $this->id,
+         'street' => $this->street,
+         'extended' => $this->extended,
+         'city' => $this->city,
+         'zip' => $this->zip,
+         'zip4' => $this->zip4,
+         'stateName' => $this->stateName,
+         'stateAbbrv' => $this->stateAbbv,
+         'addressType' => $this->addressType,
+         'identityId' => $this->identityId
+      );
    }
 }
 ?>

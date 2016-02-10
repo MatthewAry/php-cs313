@@ -10,9 +10,9 @@ class Student {
 
    public function __construct($studentId, $identityId, $gradeId, $schoolId) {
       $this->studentId = $studentId;
-      $this->identity = Identity::find($identityId);
-      $this->school = School::find($schoolId);
-      $this->grade = Grade::find($gradeId);
+      $this->identity = Identity::findById($identityId);
+      $this->school = School::findById($schoolId);
+      $this->grade = Grade::findById($gradeId);
    }
 
    // We are only doing getters!
@@ -33,15 +33,28 @@ class Student {
    }
 
    public function getValues() {
-      $values = array('id' => $studentId, 'identity' => $identity.getValues(),
-                      'grade' => $grade.getValues(),
-                      'school' => $school.getValues());
+      $values = array('id' => $this->studentId,
+                      'identity' => $this->identity->getValues(),
+                      'grade' => $this->grade->getValues(),
+                      'school' => $this->school->getValues());
+      // For performance reasons we might not need the stuff below.
       if (isset($classList)) {
-         $values['classList'] = $classList;
+         $values['classList'] = $this->classList;
       }
       if (isset($contactList)) {
-         $values['contactList'] = $contactList;
+         $values['contactList'] = $this->contactList;
       }
+      return $values;
+   }
+
+   public static function findById($id) {
+      $db = Db::getInstance();
+      $request = $db->prepare('SELECT * FROM student WHERE idStudent = :id');
+      $request->bindParam(":id", $id, PDO::PARAM_INT);
+      $request->execute();
+      $result = $request->fetch();
+      return new Student($result['idStudent'], $result['Identity_id'],
+                         $result['Grade_id'], $result['School_id']);
    }
 
    public function loadClassList() {

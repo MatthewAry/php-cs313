@@ -1,10 +1,10 @@
 <?php
 class Sclass
 {
-   public $id;
-   public $teacher_id;
-   public $grade_id;
-   public $name;
+   private $id;
+   private $teacher_id;
+   private $grade_id;
+   private $name;
 
    public function __construct($id, $teacher_id, $grade_id, $name) {
       $this->id = $id;
@@ -29,7 +29,7 @@ class Sclass
 
    public static function findById($id) {
       $db = Db::getInstance();
-      $request = $db->prepare('SELECT * FROM class WHERE id = :id');
+      $request = $db->prepare('SELECT * FROM class WHERE idClass = :id');
       $request->execute(array('id' => $id));
       $class = $request->fetch();
 
@@ -37,7 +37,22 @@ class Sclass
                         $class['GradeLevel_id'], $class['Name']);
    }
 
+   public static function findByTeacherId($id) {
+      $list = [];
+      $db = Db::getInstance();
+      $request = $db->prepare('SELECT * FROM class WHERE Teacher_id = :id');
+      $request->execute(array('id' => $id));
+      foreach ($request->fetchAll() as $result) {
+         $list[] = new Sclass($result['idClass'], $result['Teacher_id'],
+                              $result['GradeLevel_id'], $result['Name']);
+      }
+      return $list;
+   }
 
+   public function getValues() {
+      return array('id' => $this->id, 'teacherId' => $this->teacher_id,
+                   'gradeId' => $this->grade_id, 'name' => $this->name);
+   }
 
 }
 

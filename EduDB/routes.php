@@ -11,6 +11,11 @@
         require_once('models/identity.php');
         require_once('models/address.php');
         require_once('models/school.php');
+        require_once('models/teacher.php');
+        require_once('models/studentContact.php');
+        require_once('models/sclass.php');
+        require_once('models/grade.php');
+        require_once('models/student.php');
         $controller = new IdentityController();
       break;
     }
