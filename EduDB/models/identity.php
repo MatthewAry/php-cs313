@@ -41,6 +41,11 @@ class Identity
       return $list;
    }
 
+   public static function rowCount() {
+      $db = Db::getInstance();
+      return (int) $db->query('SELECT count(*) FROM identity')->fetchColumn();
+   }
+
    public static function findById($id) {
       $db = Db::getInstance();
       $request = $db->prepare('SELECT * FROM identity WHERE id = :id');

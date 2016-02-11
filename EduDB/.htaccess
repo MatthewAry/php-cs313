@@ -1,0 +1,3 @@
+RewriteEngine on
+
+RewriteRule ^([^/]*)/([^/]*)$ /php/EduDB/?controller=$1&action=$2 [L]

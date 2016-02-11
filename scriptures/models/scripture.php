@@ -26,5 +26,34 @@
          }
          return $list;
       }
+
+      public static function addScripture($book, $chapter, $verse, $content) {
+         $db = Db::getInstance();
+         $request = $db->prepare('INSERT INTO scriptures (book, chapter, '.
+                                 'verse, content) VALUES (:book, :chapter, '.
+                                 ':verse, :content)');
+         $request->bindParam(':book', $book);
+         $request->bindParam(':chapter', $chapter);
+         $request->bindParam(':verse', $verse);
+         $request->bindParam(':content', $content);
+         $request->execute();
+         return $db->lastInsertId();
+
+         //return ID that the row was assigned
+      }
+
+      // $id scripture id
+      // $topics array of topic id's associated with scripture
+      public static function setTopics($id, $topics) {
+         $db = Db::getInstance();
+         foreach ($topics as $key => $value) {
+            $request = $db->prepare('INSERT INTO scripture_topic ('.
+                                    'scripture_id, topic_id) VALUES '.
+                                    '(:scripture_id, :topid_id)');
+            $request->bindParam(":scripture_id", $id);
+            $request->bindParam(":topic_id", $value);
+            $request->execute();
+         }
+      }
    }
 ?>
