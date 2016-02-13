@@ -21,8 +21,27 @@ class StudentController
         require_once('views/student/listContacts.php');
     }
 
-    public function listStudentContactsPost() {
+    public function listStudents() {
+        $start = 0;
+        $number = 50;
+        if(isset($_POST['rStart']))
+            $start = $_POST['rStart'];
+        if(isset($_POST['rNumber']))
+            $number = $_POST['rNumber'];
+        else
+            $number = School::rowCount();
+        $schoolList = School::all($start, $number);
+        $studentsAtSchool = '';
+        $schoolName = '';
 
+        if(isset($_POST['schoolID'])) {
+            $studentsAtSchool = Student::allStudentsAtSchool($_POST['schoolID'], $start, $number);
+            $schoolName = School::findById($_POST['schoolID']);
+            $schoolName = $schoolName->getValues();
+            $schoolName = $schoolName['name'];
+        }
+
+        require_once('views/student/listStudents.php');
     }
 
 }

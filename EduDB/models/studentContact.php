@@ -1,5 +1,5 @@
 <?php
-
+require_once('models/identity.php');
 class StudentContact
 {
     private $id;

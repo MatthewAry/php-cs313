@@ -12,12 +12,13 @@ class SchoolController
     {
         $start = 0;
         $number = 50;
-        $records = School::rowCount();
         if(isset($_POST['rStart']))
             $start = $_POST['rStart'];
         if(isset($_POST['rNumber']))
             $number = $_POST['rNumber'];
-        $schools = School::all($start, $records);
+        else
+            $number = School::rowCount();
+        $schools = School::all($start, $number);
         require_once('views/school/list.php');
     }
 }

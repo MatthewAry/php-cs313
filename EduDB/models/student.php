@@ -29,11 +29,11 @@ class Student
         $db = Db::getInstance();
         $request = $db->prepare('SELECT * FROM Student WHERE School_id = :id ' .
             'LIMIT :start, :number');
-        $request->bindParam(":id", $id, PDO::PARAM_INT);
+        $request->bindParam(":id", $schoolId, PDO::PARAM_INT);
         $request->bindParam(":start", $start, PDO::PARAM_INT);
         $request->bindParam(":number", $number, PDO::PARAM_INT);
         $request->execute();
-        foreach ($request->fetchAll as $student) {
+        foreach ($request->fetchAll() as $student) {
             $list[] = new Student($student['idStudent'], $student['Identity_id'],
                 $student['Grade_id'], $student['School_id']);
         }

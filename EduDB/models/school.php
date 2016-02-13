@@ -30,7 +30,6 @@ class School
         foreach ($request->fetchAll() as $school) {
             $list[] = new School($school['idSchool'], $school['Name']);
         }
-
         return array('records' => $records, 'list' => $list);
 
         // returns an array with the number of records found and

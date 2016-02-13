@@ -9,11 +9,10 @@
     <input type="submit" value="submit">
 </p>
 </form>
-<?php ?>
 <h2>Student's Contacts for Student ID <?php echo $id; ?></h2>
 <?php
     if(empty($studentContacts)) {
-        echo 'No Records Returned<br>'; 
+        echo 'No Records Returned<br>';
     }
 foreach ($studentContacts as $i): $i = $i->getValues(); ?>
     <hr>

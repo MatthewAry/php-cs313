@@ -35,7 +35,7 @@ function call($controller, $action)
 // we're adding an entry for the new controller and its actions
 $controllers = array('identity' => ['home', 'listRecords'],
                      'school' => ['listRecords'],
-                     'student' => ['listStudentContacts'],
+                     'student' => ['listStudentContacts', 'listStudents'],
                      'posts' => ['index', 'show']);
   if (array_key_exists($controller, $controllers)) {
       if (in_array($action, $controllers[$controller])) {

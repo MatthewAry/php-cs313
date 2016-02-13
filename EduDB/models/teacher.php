@@ -22,7 +22,7 @@ class Teacher
         $this->getIdentity($identityId);
     }
 
-    public function findById($id)
+    public static function findById($id)
     {
         $db = Db::getInstance();
         $id = intval($id); // Validate that it is actually a number
