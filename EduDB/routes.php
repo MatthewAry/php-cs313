@@ -1,7 +1,6 @@
 <?php
 function call($controller, $action)
 {
-
     //print_r($controller);
     require_once('controllers/' . $controller . '_controller.php');
     switch ($controller) {
@@ -28,15 +27,35 @@ function call($controller, $action)
             require_once('models/student.php');
             $controller = new StudentController();
             break;
+        case 'sclass':
+            require_once('models/sclass.php');
+            $controller = new SclassController();
+            break;
     }
     $controller->{$action}();
 }
 
 // we're adding an entry for the new controller and its actions
-$controllers = array('identity' => ['home', 'listRecords'],
-                     'school' => ['listRecords'],
-                     'student' => ['listStudentContacts', 'listStudents'],
-                     'posts' => ['index', 'show']);
+$controllers = array(
+    'identity' => [
+        'home',
+        'listRecords',
+        'updateImage',
+        'updateIdentity'
+    ],
+    'school' => [
+        'listRecords'],
+    'student' => [
+        'listStudentContacts',
+        'listStudents',
+        'viewStudent',
+        'viewContact',
+        'updateStudent'
+    ],
+    'sclass' => [
+        'listClasses', 'viewClass'],
+    'teacher' => [
+        'viewTeacher']);
   if (array_key_exists($controller, $controllers)) {
       if (in_array($action, $controllers[$controller])) {
           call($controller, $action);

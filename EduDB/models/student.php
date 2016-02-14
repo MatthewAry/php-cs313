@@ -4,6 +4,7 @@ require_once('models/grade.php');
 require_once('models/studentContact.php');
 require_once('models/identity.php');
 require_once('models/school.php');
+require_once('models/sclass.php');
 class Student
 {
     private $studentId;
@@ -47,10 +48,10 @@ class Student
             'grade' => $this->grade->getValues(),
             'school' => $this->school->getValues());
         // For performance reasons we might not need the stuff below.
-        if (isset($classList)) {
+        if (!empty($this->classList)) {
             $values['classList'] = $this->classList;
         }
-        if (isset($contactList)) {
+        if (!empty($this->contactList)) {
             $values['contactList'] = $this->contactList;
         }
         return $values;
@@ -64,8 +65,9 @@ class Student
         $request->bindParam(":number", $number, PDO::PARAM_INT);
         $request->execute();
         foreach ($request->fetchAll() as $student) {
-            $list[] = new Student($student['idStudent'], $student['Identity_id'],
+            $item = new Student($student['idStudent'], $student['Identity_id'],
                 $student['Grade_id'], $student['School_id']);
+            $list[] = $item->getValues();
         }
         return $list;
     }
@@ -85,20 +87,24 @@ class Student
     {
         $list = [];
         $db = Db::getInstance();
-        $request = $db->prepare('SELECT * FROM student_to_class WHERE Student_id = :id ' .
-            'LIMIT :start, :number');
-        $request->bindParam(":id", $studentId, PDO::PARAM_INT);
+        $request = $db->prepare('SELECT * FROM student_to_class WHERE Student_id = :id ');
+        $request->bindParam(":id", $this->studentId, PDO::PARAM_INT);
         $request->execute();
-        foreach ($request->fetchAll as $class) {
-            $list[] = Sclass::findById($class['Class_id']);
+        foreach ($request->fetchAll() as $class) {
+            $item = Sclass::findById($class['Class_id']);
+            $list[] = $item->getValues();
         }
-        $classList = $list;
+        $this->classList = $list;
     }
 
-    public function loadContactList($id)
+    public function loadContactList()
     {
-        $contactList = StudentContact::findByStudentId($id);
+        $list = StudentContact::findByStudentId($this->studentId);
+        foreach ($list as $i) {
+            $this->contactList[] = $i->getValues();
+        }
     }
+
 
     public static function rowCount()
     {

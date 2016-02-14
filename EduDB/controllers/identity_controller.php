@@ -21,6 +21,33 @@
          $identities = Identity::all($start, $records);
          require_once('views/identity/list.php');
       }
+
+       public function updateImage() {
+           require_once('helpers/upload.php');
+           $code = '';
+           if (isset($_POST['id']) && isset($_POST['path'])) {
+               $id = intval($_POST['id']);
+               $handle = new upload($_FILES['image_field']);
+               if ($handle->uploaded) {
+                   $handle->file_new_name_body   = $id;
+                   $handle->image_resize         = true;
+                   $handle->image_x              = 100;
+                   $handle->image_ratio_y        = true;
+                   $handle->file_overwrite       = true;
+                   $handle->process($_SERVER['DOCUMENT_ROOT'] . '/EduDB/imageUploads/' );
+                   if ($handle->processed) {
+                       $code = 'i1'; // Success
+                       $handle->clean();
+                   } else {
+                       echo 'error : ' . $handle->error;
+                       $code = 'i0'; // Failure
+                   }
+               }
+               Identity::updateImage($id, '/EduDB/imageUploads/'.$handle->file_dst_name);
+           }
+           header("Location: " . $_POST['path'].'/'.$code);
+       }
+
    }
 
 ?>

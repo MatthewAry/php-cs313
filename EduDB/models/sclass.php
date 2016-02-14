@@ -1,5 +1,6 @@
 <?php
 include_once ('models/teacher.php');
+include_once ('models/grade.php');
 class Sclass
 {
     private $id;
@@ -31,13 +32,16 @@ class Sclass
         return $list;
     }
 
-    public static function getAllClassesAtSchool($schoolId) {
+    public static function getAllClassesAtSchool($schoolId, $start, $number) {
         $list = [];
         $db = Db::getInstance();
-        $request = $db->prepare('SELECT * FROM class WHERE schoolId = :id');
+        $request = $db->prepare('SELECT * FROM class WHERE schoolId = :id '.
+                   'LIMIT :start, :number');
         $request->bindParam(":id", $schoolId, PDO::PARAM_INT);
+        $request->bindParam(":start", $start, PDO::PARAM_INT);
+        $request->bindParam(":number", $number, PDO::PARAM_INT);
         $request->execute();
-        foreach ($request->fetchAll as $class) {
+        foreach ($request->fetchAll() as $class) {
             $list[] = new Sclass($class['idClass'], $class['Teacher_id'],
                 $class['schoolId'], $class['GradeLevel_id'], $class['Name']);
         }
@@ -72,7 +76,7 @@ class Sclass
         return array('id' => $this->id,
             'teacher' => Teacher::findById($this->teacher_id)->getValues(),
             'schoolId' => $this->school_id,
-            'gradeId' => $this->grade_id,
+            'grade' => Grade::findById($this->grade_id)->getValues(),
             'name' => $this->name);
     }
 

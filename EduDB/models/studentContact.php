@@ -24,6 +24,17 @@ class StudentContact
         $this->relationship = $request->fetch();
     }
 
+    public static function getRelationships() {
+        $db = Db::getInstance();
+        $request = $db->prepare('SELECT * FROM Relationship ');
+        $request->execute();
+        $list = [];
+        foreach ($request->fetchAll() as $i) {
+            $list[] = array("id" => $i['idRelationship'], "type" => $i['Type']);
+        }
+        return $list;
+    }
+
     public function __construct($id, $studentID, $identityID, $relationshipID)
     {
         $this->id = $id;
@@ -40,7 +51,7 @@ class StudentContact
         $list = [];
         $db = Db::getInstance();
         $request = $db->prepare('SELECT * FROM student_to_identity ' .
-            'WHERE Student_id = :id');
+                                'WHERE Student_id = :id');
         $request->bindParam(":id", $id, PDO::PARAM_INT);
         $request->execute();
         foreach ($request->fetchAll() as $result) {
@@ -49,6 +60,20 @@ class StudentContact
                 $result['Relationship_id']);
         }
         return $list;
+    }
+
+    public static function findById($id)
+    {
+        $list = [];
+        $db = Db::getInstance();
+        $request = $db->prepare('SELECT * FROM student_to_identity ' .
+                                'WHERE id = :id');
+        $request->bindParam(":id", $id, PDO::PARAM_INT);
+        $request->execute();
+        $result = $request->fetch();
+        return new StudentContact($result['id'], $result['Student_id'],
+            $result['Identity_id'],
+            $result['Relationship_id']);
     }
 
     public function getValues()

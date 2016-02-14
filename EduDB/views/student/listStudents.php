@@ -7,7 +7,7 @@
  */
 ?>
 
-<form action="listStudents" method="post">
+<form action="?controller=student&action=listStudents" method="post">
     <p>Select School:</p>
     <select name="schoolID">
         <?php foreach ($schoolList['list'] as $i): $i = $i->getValues(); ?>
@@ -17,6 +17,7 @@
     <input type="submit" value="submit">
 </form>
 <?php if(!empty($studentsAtSchool) && !empty($schoolName)): ?>
+
     <h2>Students at <?php echo $schoolName; ?></h2>
     <table>
         <tr>

@@ -1,5 +1,5 @@
 <?php
-
+require_once ('models/identity.php');
 class Teacher
 {
     private $id;
@@ -31,7 +31,7 @@ class Teacher
         $teacher = $request->fetch();
 
         return new Teacher($teacher['idTeacher'], $teacher['School_id'],
-            $teacher['Identity_id'], $teacher['details']);
+            $teacher['Identity_id'], $teacher['Details']);
     }
 
     public static function findBySchoolId($id)

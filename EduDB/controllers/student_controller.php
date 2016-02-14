@@ -44,4 +44,49 @@ class StudentController
         require_once('views/student/listStudents.php');
     }
 
+    public function viewStudent() {
+        if (!isset($_GET['id'])) {
+            $error = "You can't edit students with out having an ID.";
+            require_once ('views/student/error.php');
+        } else {
+            // Load Student
+            $student = Student::findById($_GET['id']);
+            //print_r($student);
+            $student->loadClassList();
+            $student->loadContactList();
+            $student = $student->getValues();
+            require_once ('views/student/edit.php');
+        }
+    }
+
+    public function viewContact() {
+        if (!isset($_GET['id'])) {
+            $error = "You can't view student contacts with out having an ID.";
+            require_once ('views/student/edit.php');
+        } else {
+            require_once ('models/studentContact.php');
+            $contact = StudentContact::findById($_GET['id']);
+            $contact = $contact->getValues();
+            // Load Contact
+            require_once ('views/student/editContact.php');
+        }
+    }
+
+
+    public static function updateStudent() {
+        // So now we need to get POST data.
+
+        // The student might needs its grade changed!
+        $values = array(
+            'id' => $_POST['id'],
+            'fName' => $_POST['firstName'],
+            'mName' => $_POST['middleName'],
+            'lName' => $_POST['lastName'],
+            'gender' => $_POST['gender'],
+            'email' => '',
+            'imageURI' => $_POST['']
+        );
+
+    }
+
 }

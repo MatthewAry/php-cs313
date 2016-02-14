@@ -1,5 +1,5 @@
 
-<form action="listStudentContacts" method="POST">
+<form action="?controller=student&action=listStudentContacts" method="POST">
 <p>Select Student:
     <select name="studentID">
         <?php foreach($studentList as $i): $i = $i->getValues(); ?>
