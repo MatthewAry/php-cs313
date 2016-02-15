@@ -17,7 +17,7 @@ class StudentContact
     private function getRelationship($id)
     {
         $db = Db::getInstance();
-        $request = $db->prepare('SELECT Type FROM Relationship ' .
+        $request = $db->prepare('SELECT Type FROM relationship ' .
             'WHERE idRelationship = :id');
         $request->bindParam(":id", $id, PDO::PARAM_INT);
         $request->execute();
@@ -26,7 +26,7 @@ class StudentContact
 
     public static function getRelationships() {
         $db = Db::getInstance();
-        $request = $db->prepare('SELECT * FROM Relationship ');
+        $request = $db->prepare('SELECT * FROM relationship ');
         $request->execute();
         $list = [];
         foreach ($request->fetchAll() as $i) {

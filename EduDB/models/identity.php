@@ -1,5 +1,5 @@
 <?php
-
+require_once ('models/address.php');
 class Identity
 {
     private $id;

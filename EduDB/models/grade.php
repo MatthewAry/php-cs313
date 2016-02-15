@@ -15,7 +15,7 @@ class Grade
     {
         $list = [];
         $db = Db::getInstance();
-        $request = $db->prepare('SELECT * FROM GradeLevel LIMIT :start, :number');
+        $request = $db->prepare('SELECT * FROM gradelevel LIMIT :start, :number');
         $request->bindParam(":start", $start, PDO::PARAM_INT);
         $request->bindParam(":number", $number, PDO::PARAM_INT);
         $request->execute();
@@ -28,7 +28,7 @@ class Grade
     public static function findById($id)
     {
         $db = Db::getInstance();
-        $request = $db->prepare('SELECT * FROM GradeLevel WHERE idGrade = :id');
+        $request = $db->prepare('SELECT * FROM gradelevel WHERE idGrade = :id');
         $request->bindParam(":id", $id, PDO::PARAM_INT);
         $request->execute();
         $result = $request->fetch();
@@ -43,7 +43,7 @@ class Grade
     public static function rowCount()
     {
         $db = Db::getInstance();
-        return (int) $db->query('SELECT count(*) FROM GradeLevel')->fetchColumn();
+        return (int) $db->query('SELECT count(*) FROM gradelevel')->fetchColumn();
     }
 }
 

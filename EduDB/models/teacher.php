@@ -26,7 +26,7 @@ class Teacher
     {
         $db = Db::getInstance();
         $id = intval($id); // Validate that it is actually a number
-        $request = $db->prepare('SELECT * FROM Teacher WHERE idTeacher = :id');
+        $request = $db->prepare('SELECT * FROM teacher WHERE idTeacher = :id');
         $request->execute(array('id' => $id));
         $teacher = $request->fetch();
 
@@ -39,7 +39,7 @@ class Teacher
         $list = [];
         $db = Db::getInstance();
         $id = intval($id); // Validate that it is actually a number
-        $request = $db->prepare('SELECT * FROM Teacher WHERE School_id = :id');
+        $request = $db->prepare('SELECT * FROM teacher WHERE School_id = :id');
         $request->execute(array('id' => $id));
         foreach ($request->fetchAll() as $teacher) {
             $list[] = new Teacher($teacher['idTeacher'], $teacher['School_id'],

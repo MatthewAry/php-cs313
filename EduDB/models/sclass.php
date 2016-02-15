@@ -25,7 +25,7 @@ class Sclass
         $request->bindParam(":start", $start, PDO::PARAM_INT);
         $request->bindParam(":number", $number, PDO::PARAM_INT);
         $request->execute();
-        foreach ($request->fetchAll as $class) {
+        foreach ($request->fetchAll() as $class) {
             $list[] = new Sclass($class['idClass'], $class['Teacher_id'],
                 $class['schoolId'], $class['GradeLevel_id'], $class['Name']);
         }
@@ -64,7 +64,7 @@ class Sclass
         $db = Db::getInstance();
         $request = $db->prepare('SELECT * FROM class WHERE Teacher_id = :id');
         $request->execute(array('id' => $id));
-        foreach ($request->fetchAll as $class) {
+        foreach ($request->fetchAll() as $class) {
             $list[] = new Sclass($class['idClass'], $class['Teacher_id'],
                 $class['schoolId'], $class['GradeLevel_id'], $class['Name']);
         }
