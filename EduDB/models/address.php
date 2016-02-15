@@ -45,7 +45,7 @@ class Address
             't.addressName, a.Identity_id ' .
             'FROM address AS a ' .
             'LEFT JOIN AddressType AS t ' .
-            'ON a.AddressType_id = t.idAddressType ' .
+            'ON a.Addresstype_id = t.idAddresstype ' .
             'LEFT JOIN state AS s ' .
             'ON a.state_id = s.idstate ' .
             'WHERE a.Identity_id = :id');
