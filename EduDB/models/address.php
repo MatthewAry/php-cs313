@@ -49,7 +49,8 @@ class Address
             'LEFT JOIN state AS s ' .
             'ON a.state_id = s.idstate ' .
             'WHERE a.Identity_id = :id');
-        $request->execute(array('id' => $id));
+        $request->bindParam(":id", $id, PDO::PARAM_INT);
+        $request->execute();
         foreach ($request->fetchAll() as $address) {
             $list[] = new Address($address['idAddress'], $address['street'],
                 $address['extended'], $address['city'],
