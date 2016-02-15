@@ -22,23 +22,21 @@ class StudentController
     }
 
     public function listStudents() {
-        $start = 0;
-        $number = 50;
-        if(isset($_POST['rStart']))
-            $start = $_POST['rStart'];
-        if(isset($_POST['rNumber']))
-            $number = $_POST['rNumber'];
-        else
-            $number = School::rowCount();
-        $schoolList = School::all($start, $number);
-        $studentsAtSchool = '';
+        $schoolList = [];
+        foreach (School::all() as $i) {
+            $schoolList[] = $i->getValues();
+        }
+        $studentsAtSchool = [];
         $schoolName = '';
 
         if(isset($_POST['schoolID'])) {
-            $studentsAtSchool = Student::allStudentsAtSchool($_POST['schoolID'], $start, $number);
+            $studentObjects = Student::allStudentsAtSchool($_POST['schoolID']);
             $schoolName = School::findById($_POST['schoolID']);
             $schoolName = $schoolName->getValues();
             $schoolName = $schoolName['name'];
+            foreach ($studentObjects as $i) {
+                $studentsAtSchool[] = $i->getValues();
+            }
         }
 
         require_once('views/student/listStudents.php');
@@ -46,23 +44,32 @@ class StudentController
 
     public function viewStudent() {
         if (!isset($_GET['id'])) {
-            $error = "You can't edit students with out having an ID.";
-            require_once ('views/student/error.php');
+            $_SESSION['Error'] = "You can't edit students without having an ID.";
         } else {
             // Load Student
             $student = Student::findById($_GET['id']);
-            //print_r($student);
             $student->loadClassList();
             $student->loadContactList();
             $student = $student->getValues();
+
+            $grades = [];
+            foreach (Grade::all() as $i) {
+                $grades[] = $i->getValues();
+            }
+
+            $schools = [];
+            foreach (School::all() as $i) {
+                $schools[] = $i->getValues();
+            }
+
+
             require_once ('views/student/edit.php');
         }
     }
 
     public function viewContact() {
         if (!isset($_GET['id'])) {
-            $error = "You can't view student contacts with out having an ID.";
-            require_once ('views/student/edit.php');
+            $_SESSION['Error'] = "You can't view student contacts without having an ID.";
         } else {
             require_once ('models/studentContact.php');
             $contact = StudentContact::findById($_GET['id']);
@@ -73,20 +80,36 @@ class StudentController
     }
 
 
-    public static function updateStudent() {
+    public function updateStudent() {
         // So now we need to get POST data.
 
-        // The student might needs its grade changed!
-        $values = array(
-            'id' => $_POST['id'],
+        // The student might need its grade changed!
+        $identity = array(
+            'id' => $_POST['identityID'],
             'fName' => $_POST['firstName'],
             'mName' => $_POST['middleName'],
             'lName' => $_POST['lastName'],
             'gender' => $_POST['gender'],
-            'email' => '',
-            'imageURI' => $_POST['']
         );
 
-    }
+        // Returns if failed
+        if (!Identity::updateIdentity($identity)) {
+            $_SESSION['Error'] = "Unable to update Student Identity!";
+        }
 
+        $student = array(
+            'id' => $_POST['studentID'],
+            'gradeId' => $_POST['grade'],
+            'identityId' => $_POST['identityID'],
+            'schoolId' => $_POST['school']
+        );
+
+        if (!Student::updateStudent($student)) {
+            $_SESSION['Error'] = "Unable to update Student!";
+        }
+
+        // TODO: If student moves schools, the student looses their classes!
+
+        header("Location: " . $_POST['path']);
+    }
 }

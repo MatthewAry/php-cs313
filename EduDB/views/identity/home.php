@@ -61,9 +61,9 @@
 <?php foreach ($classes as $i): $i = $i->getValues(); ?>
     <hr>
     ID: <?php echo $i['id']; ?><br>
-    Teacher ID: <?php echo $i['teacherId']; ?><br>
-    Grade ID: <?php echo $i['gradeId']; ?><br>
-    Name: <?php echo $i['name']; ?>
+    Teacher ID: <?php echo $i['teacher']['id']; ?><br>
+    Grade ID: <?php echo $i['grade']['id']; ?><br>
+    Name: <?php echo $i['grade']['name']; ?>
 <?php endforeach; ?>
 
 <h2>Full Student Information for Student ID 1</h2>

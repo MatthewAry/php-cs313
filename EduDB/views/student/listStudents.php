@@ -8,13 +8,15 @@
 ?>
 
 <form action="?controller=student&action=listStudents" method="post">
-    <p>Select School:</p>
+    <p>Select School:
     <select name="schoolID">
-        <?php foreach ($schoolList['list'] as $i): $i = $i->getValues(); ?>
+        <option selected>Select One</option>
+        <?php foreach ($schoolList as $i):?>
             <option value="<?php echo $i['id']; ?>"><?php echo $i['name']; ?></option>
         <?php endforeach; ?>
     </select>
     <input type="submit" value="submit">
+    </p>
 </form>
 <?php if(!empty($studentsAtSchool) && !empty($schoolName)): ?>
 
@@ -27,8 +29,9 @@
             <th>Last Name</th>
             <th>Gender</th>
             <th>Grade</th>
+            <th></th>
         </tr>
-    <?php foreach($studentsAtSchool as $i): $i = $i->getValues(); ?>
+    <?php foreach($studentsAtSchool as $i):?>
         <tr>
             <td><img src="<?php echo $i['identity']['image'] ?>"></td>
             <td><?php echo $i['identity']['firstName']; ?></td>
@@ -36,11 +39,12 @@
             <td><?php echo $i['identity']['lastName']; ?></td>
             <td><?php echo $i['identity']['gender']; ?></td>
             <td><?php echo $i['grade']['name']; ?></td>
+            <td><a href="?controller=student&action=viewStudent&id=<?php echo $i['id'] ?>">view</a></td>
         </tr>
     <?php endforeach; ?>
     </table>
-<?php elseif(empty($studentsAtSchool)): ?>
-    <h2>No students were found at that school.</h2>
-<?php else: ?>
+<?php elseif(empty($studentsAtSchool) && !empty($schoolName)): ?>
+    <h2>No students were found at <?php echo $schoolName; ?>.</h2>
+<?php elseif(empty($schoolName)): ?>
     <h2>Select a School.</h2>
 <?php endif; ?>

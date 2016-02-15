@@ -11,15 +11,18 @@ class Grade
         $this->name = $name;
     }
 
-    public static function all($start, $number)
+    public static function all($start = 0, $number = false)
     {
         $list = [];
         $db = Db::getInstance();
         $request = $db->prepare('SELECT * FROM gradelevel LIMIT :start, :number');
+        if (!$number) {
+            $number = self::rowCount();
+        }
         $request->bindParam(":start", $start, PDO::PARAM_INT);
         $request->bindParam(":number", $number, PDO::PARAM_INT);
         $request->execute();
-        foreach ($request->fetchAll as $grade) {
+        foreach ($request->fetchAll() as $grade) {
             $list[] = new Grade($grade['idGrade'], $grade['Name']);
         }
         return $list;

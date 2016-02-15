@@ -1,7 +1,3 @@
-<pre>
-    <?php print_r($student); ?>
-</pre>
-
 <p>
     <img src="<?php echo $student['identity']['image'] ?>" alt="<?php echo $student['identity']['firstName']; ?>
     <?php echo $student['identity']['lastName']; ?>"><br>
@@ -10,12 +6,11 @@
         <input type="hidden" name="id" value="<?php echo $student['identity']['id']; ?>">
         <input type="hidden" name="path" value="<?php echo $_SERVER['REQUEST_URI']; ?>">
         <input type="submit" name="Submit" value="upload">
-        <?php echo $_SERVER['DOCUMENT_ROOT']; ?>
     </form>
 </p>
 
-<form action="/EduDB/?controller=identity&action=updateImage">
-<p><?php echo $student['id']; ?></p>
+<form action="/EduDB/?controller=student&action=updateStudent" method="post">
+<p>ID: <?php echo $student['id']; ?></p>
 <p>
     First Name: <input type="text" value="<?php echo $student['identity']['firstName']; ?>" name="firstName">
 </p>
@@ -33,17 +28,28 @@
 <p/>
 
 <p>
- Grade: <?php echo $student['grade']['name']; ?>
+ Grade:
+     <select name="grade">
+        <?php foreach ($grades as $i): ?>
+        <option value="<?php echo $i['id']; ?>"<?php echo ($student['grade']['id'] == $i['id'])?' selected':''; ?>><?php echo $i['name']; ?></option>
+        <?php endforeach; ?>
+    </select>
 </p>
-    <input type="hidden" name="id" value="<?php echo $student['identity']['id']; ?>">
-    <input type="hidden" name="uri" value="<?php echo $student['identity']['image']; ?>">
-    <input type="submit" value="SubmitIdentity">
+<p>
+    School: <select name="school">
+        <?php foreach ($schools as $i): ?>
+        <option value="<?php echo $i['id']; ?>"<?php echo ($student['school']['id'] == $i['id'])?' selected':''; ?>><?php echo $i['name']; ?></option>
+        <?php endforeach; ?>
+    </select>
+</p>
+    <input type="hidden" name="identityID" value="<?php echo $student['identity']['id']; ?>">
+    <input type="hidden" name="studentID" value="<?php echo $student['id']; ?>">
+    <input type="hidden" name="path" value="<?php echo $_SERVER['REQUEST_URI']; ?>">
+    <button type="submit" value="SubmitIdentity">Submit Changes</button>
 </form>
 <p>
-    School: <?php echo $student['school']['name']; ?>
-</p>
-<p>
 Student Classes:
+<?php if (isset($student['classList'])): ?>
     <table>
         <tr>
             <th>
@@ -66,10 +72,14 @@ Student Classes:
         </tr>
     <?php endforeach; ?>
     </table>
+<?php else: ?>
+    <p>This student does not belong to any classes.</p>
+<?php endif; ?>
 </p>
 <p>
     Student Contact Information:
-    <table>
+    <?php if (isset($student['contactList'])): ?>
+        <table>
         <tr>
             <th>Relationship</th>
             <th>Name</th>
@@ -83,5 +93,7 @@ Student Classes:
         </tr>
     <?php endforeach; ?>
     </table>
-
+    <?php else: ?>
+    <p>This student has no contacts.</p>
+    <?php endif ?>
 </p>

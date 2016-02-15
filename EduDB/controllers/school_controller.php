@@ -21,4 +21,13 @@ class SchoolController
         $schools = School::all($start, $number);
         require_once('views/school/list.php');
     }
+
+    public function editSchool() {
+        // Add/Remove Teachers
+        // Add/Remove Classes
+    }
+
+    public function addSchool() {
+
+    }
 }

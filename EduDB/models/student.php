@@ -24,14 +24,18 @@ class Student
     }
 
     // We are only doing getters!
-    public static function allStudentsAtSchool($schoolId, $start, $number)
+    public static function allStudentsAtSchool($schoolId, $start = 0, $number = false)
     {
         $list = [];
         $db = Db::getInstance();
-        $request = $db->prepare('SELECT * FROM Student WHERE School_id = :id ' .
+        if (!$number) {
+            $number = self::rowCountAtSchool($schoolId);
+        }
+        $request = $db->prepare('SELECT * FROM student WHERE School_id = :id ' .
             'LIMIT :start, :number');
         $request->bindParam(":id", $schoolId, PDO::PARAM_INT);
         $request->bindParam(":start", $start, PDO::PARAM_INT);
+        
         $request->bindParam(":number", $number, PDO::PARAM_INT);
         $request->execute();
         foreach ($request->fetchAll() as $student) {
@@ -105,6 +109,62 @@ class Student
         }
     }
 
+    public static function updateStudent($values) {
+        // This is as bad as it looks since it means tight coupling.
+        if (isset($values['id'])) {
+            $query = 'UPDATE student SET ';
+            $queryBuilder = [];
+            if (isset($values['gradeId'])) {
+                $queryBuilder[] ='Grade_id = :gradeId';
+            }
+            if (isset($values['identityId'])) {
+                $queryBuilder[] ='Identity_id = :identityId';
+            }
+            if (isset($values['schoolId'])) {
+                $queryBuilder[] ='School_id = :schoolId';
+            }
+            foreach ($queryBuilder as $key => $value) {
+                $query = $query . $value;
+                if (isset($queryBuilder[$key+1])) {
+                    $query = $query .', ';
+                } else {
+                    $query = $query .' ';
+                }
+            }
+
+            $query = $query . 'WHERE idStudent = :id';
+
+            $db = Db::getInstance();
+            $request = $db->prepare($query);
+
+            $request->bindParam(":id", $values['id'], PDO::PARAM_INT);
+            if (isset($values['gradeId'])) {
+                $request->bindParam(":gradeId", $values['gradeId'], PDO::PARAM_STR);
+            }
+            if (isset($values['identityId'])) {
+                $request->bindParam(":identityId", $values['identityId'], PDO::PARAM_STR);
+            }
+            if (isset($values['schoolId'])) {
+                $request->bindParam(":schoolId", $values['schoolId'], PDO::PARAM_STR);
+            }
+
+            if(!$request->execute()) {
+                return false;
+            } else {
+                return true;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    public static function rowCountAtSchool($schoolId) {
+        $db = Db::getInstance();
+        $request = $db->prepare('SELECT count(*) FROM student WHERE School_id = :id');
+        $request->bindParam(":id", $schoolId, PDO::PARAM_INT);
+        $request->execute();
+        return (int) $request->fetchColumn();
+    }
 
     public static function rowCount()
     {

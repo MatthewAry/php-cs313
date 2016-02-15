@@ -26,6 +26,13 @@ body.assignments {
      }
    }
 }
+body.school {
+     .card-wide {
+      margin-top: -159px;
+      > .mdl-card__title {
+     }
+   }
+}
 .card-wide{
    margin-left: -256px;
    &.mdl-card {

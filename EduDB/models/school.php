@@ -15,7 +15,7 @@ class School
     // Gets a list of schools in the Database
     // $start sets the records to skip
     // $number sets the records to grab at a time.
-    public static function all($start, $number)
+    public static function all($start = 0, $number = false)
     {
         $list = [];
         $db = Db::getInstance();
@@ -24,13 +24,16 @@ class School
         $records = $records->fetchColumn();
         $request = $db->prepare('SELECT * FROM school LIMIT ' .
             ':start,:number');
+        if (!$number) {
+            $number = self::rowCount();
+        }
         $request->bindParam(":start", $start, PDO::PARAM_INT);
         $request->bindParam(":number", $number, PDO::PARAM_INT);
         $request->execute();
         foreach ($request->fetchAll() as $school) {
             $list[] = new School($school['idSchool'], $school['Name']);
         }
-        return array('records' => $records, 'list' => $list);
+        return $list;
 
         // returns an array with the number of records found and
         // a list of schools restricted to the

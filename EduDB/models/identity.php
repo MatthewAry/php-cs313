@@ -1,5 +1,4 @@
 <?php
-require_once ('models/address.php');
 class Identity
 {
     private $id;
@@ -96,30 +95,70 @@ class Identity
 
     public static function updateIdentity($values)
     {
-        $db = Db::getInstance();
-        $request = $db->prepare(
-            'UPDATE identity ' .
-            'SET first_name = :fName, ' .
-            'middle_name = :mName, ' .
-            'last_name = :lName, ' .
-            'gender = :gender, ' .
-            'email = :email, ' .
-            'id_Image_uri = :imageURI ' .
-            'WHERE id = :id'
-        );
+        // This is as bad as it looks since it means tight coupling.
+        if (isset($values['id'])) {
+            $query = 'UPDATE identity SET ';
+            $queryBuilder = [];
+            if (isset($values['fName'])) {
+                $queryBuilder[] ='first_name = :fName';
+            }
+            if (isset($values['mName'])) {
+                $queryBuilder[] ='middle_name = :mName';
+            }
+            if (isset($values['lName'])) {
+                $queryBuilder[] ='last_name = :lName';
+            }
+            if (isset($values['gender'])) {
+                $queryBuilder[] ='gender = :gender';
+            }
+            if (isset($values['email'])) {
+                $queryBuilder[] ='email = :email';
+            }
+            if (isset($values['imageURI'])) {
+                $queryBuilder[] ='id_Image_uri = :imageURI';
+            }
+            foreach ($queryBuilder as $key => $value) {
+                $query = $query . $value;
+                if (isset($queryBuilder[$key+1])) {
+                    $query = $query .', ';
+                } else {
+                    $query = $query .' ';
+                }
 
-        $request->bindParam(":id", $values['id'], PDO::PARAM_INT);
-        $request->bindParam(":fName", $values['fName'], PDO::PARAM_STR);
-        $request->bindParam(":mName", $values['mName'], PDO::PARAM_STR);
-        $request->bindParam(":lName", $values['lName'], PDO::PARAM_STR);
-        $request->bindParam(":gender", $values['gender'], PDO::PARAM_BOOL);
-        $request->bindParam(":email", $values['email'], PDO::PARAM_STR);
-        $request->bindParam(":imageURI", $values['imageURI'], PDO::PARAM_STR);
+            }
 
-        if(!$request->execute()) {
-            return false;
+            $query = $query . 'WHERE id = :id';
+
+            $db = Db::getInstance();
+            $request = $db->prepare($query);
+
+            $request->bindParam(":id", $values['id'], PDO::PARAM_INT);
+            if (isset($values['fName'])) {
+                $request->bindParam(":fName", $values['fName'], PDO::PARAM_STR);
+            }
+            if (isset($values['mName'])) {
+                $request->bindParam(":mName", $values['mName'], PDO::PARAM_STR);
+            }
+            if (isset($values['lName'])) {
+                $request->bindParam(":lName", $values['lName'], PDO::PARAM_STR);
+            }
+            if (isset($values['gender'])) {
+                $request->bindParam(":gender", $values['gender'], PDO::PARAM_BOOL);
+            }
+            if (isset($values['email'])) {
+                $request->bindParam(":email", $values['email'], PDO::PARAM_STR);
+            }
+            if (isset($values['imageURI'])) {
+                $request->bindParam(":imageURI", $values['imageURI'], PDO::PARAM_STR);
+            }
+
+            if(!$request->execute()) {
+                return false;
+            } else {
+                return true;
+            }
         } else {
-            return true;
+            return false;
         }
     }
 }

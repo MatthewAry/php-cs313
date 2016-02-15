@@ -13,12 +13,14 @@
       public function listRecords() {
          $start = 0;
          $number = 50;
-         $records = Identity::rowCount();
          if(isset($_POST['rStart']))
             $start = $_POST['rStart'];
          if(isset($_POST['rNumber']))
             $number = $_POST['rNumber'];
-         $identities = Identity::all($start, $records);
+         else
+            $number = Identity::rowCount();
+
+         $identities = Identity::all($start, $number);
          require_once('views/identity/list.php');
       }
 
@@ -36,16 +38,15 @@
                    $handle->file_overwrite       = true;
                    $handle->process($_SERVER['DOCUMENT_ROOT'] . '/EduDB/imageUploads/' );
                    if ($handle->processed) {
-                       $code = 'i1'; // Success
+                       //$code = 'i1'; // Success
                        $handle->clean();
                    } else {
-                       echo 'error : ' . $handle->error;
-                       $code = 'i0'; // Failure
+                       $_SESSION['ERROR'] = $handle->error; // Failure
                    }
                }
                Identity::updateImage($id, '/EduDB/imageUploads/'.$handle->file_dst_name);
            }
-           header("Location: " . $_POST['path'].'/'.$code);
+           header("Location: " . $_POST['path']);
        }
 
    }
