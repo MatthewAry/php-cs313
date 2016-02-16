@@ -22,6 +22,9 @@
   </div>
 </div>
 <div class="container">
+   <div class="page-header">
+      <h1>View and Modify Student</h1>
+   </div>
    <form class="form-horizontal" action="?controller=student&action=updateStudent" method="post">
       <div class="panel panel-info">
          <div class="panel-heading">
@@ -129,86 +132,97 @@
             <h2 class="panel-title">Enrollment</h2>
          </div>
          <div class="panel-body">
-            <ul class="list-group">
-               <li class="list-group-item">
-                  <label for="grade" class="col-md-2 control-label">Grade:</label>
-                  <div class="col-md-10">
-                     <select id="grade" name="grade" class="form-control">
-                        <?php foreach ($grades as $i): ?>
-                        <option value="<?php echo $i['id']; ?>"<?php echo ($student['grade']['id'] == $i['id'])?' selected':''; ?>><?php echo $i['name']; ?></option>
-                        <?php endforeach; ?>
-                     </select>
-                  </div>
-              </li>
-            </ul>
+            <div class="form-group">
+               <label for="grade" class="col-md-2 control-label">Grade:</label>
+               <div class="col-md-10">
+                  <select id="grade" name="grade" class="form-control">
+                     <?php foreach ($grades as $i): ?>
+                     <option value="<?php echo $i['id']; ?>"<?php echo ($student['grade']['id'] == $i['id'])?' selected':''; ?>><?php echo $i['name']; ?></option>
+                     <?php endforeach; ?>
+                  </select>
+               </div>
+            </div>
+           <div class="form-group">
+              <label for="school" class="col-md-2 control-label">School</label>
+              <div class="col-md-10">
+                 <select id="school" name="school" class="form-control">
+                    <?php foreach ($schools as $i): ?>
+                       <option value="<?php echo $i['id']; ?>"<?php echo ($student['school']['id'] == $i['id'])?' selected':''; ?>><?php echo $i['name']; ?></option>
+                    <?php endforeach; ?>
+                 </select>
+              </div>
+           </div>
          </div>
       </div>
-      <p>
-          School: <select id="school" name="school" class="form-control">
-              <?php foreach ($schools as $i): ?>
-              <option value="<?php echo $i['id']; ?>"<?php echo ($student['school']['id'] == $i['id'])?' selected':''; ?>><?php echo $i['name']; ?></option>
-              <?php endforeach; ?>
-           </select>
-      </p>
        <input type="hidden" name="identityID" value="<?php echo $student['identity']['id']; ?>">
        <input type="hidden" name="studentID" value="<?php echo $student['id']; ?>">
        <input type="hidden" name="path" value="<?php echo $_SERVER['REQUEST_URI']; ?>">
-       <input type="submit" value="SubmitIdentity">
+       <button class="btn btn-raised btn-info" type="submit" value="SubmitIdentity">Update Student</button>
    </form>
-</div>
+   <div class="panel panel-info">
+      <div class="panel-heading">
+         <h2 class="panel-title">Assigned Classes</h2>
+      </div>
+      <div class="panel-body">
+         <?php if (isset($student['classList'])): ?>
+             <table class="table table-striped table-hover">
+               <thead>
+                  <tr>
+                      <th>Class Name</th>
+                      <th>Grade Level</th>
+                      <th>Teacher</th>
+                      <th></th>
+                  </tr>
+               </thead>
+               <tbody>
+                  <?php foreach ($student['classList'] as $i): ?>
+                  <tr>
+                       <td><?php echo $i['name']; ?></td>
+                       <td><?php echo $i['grade']['name']; ?></td>
+                       <td><?php echo $i['teacher']['identity']['firstName'] . ' ' . $i['teacher']['identity']['lastName']; ?></td>
+                       <td>Controls will go here</td>
+                  </tr>
+                  <?php endforeach; ?>
+               </tbody>
+             </table>
+         <?php else: ?>
+             <p>This student does not belong to any classes at this school.</p>
+         <?php endif; ?>
+      </div>
+   </div>
+   <div class="panel panel-info">
+      <div class="panel-heading">
+         <h2 class="panel-title">Student Contacts</h2>
+      </div>
+      <div class="panel-body">
+      <?php if (isset($student['contactList'])): ?>
+      <table class="table table-striped table-hover">
+         <thead>
+            <tr>
+               <th>Relationship</th>
+               <th>Name</th>
+               <th></th>
+            </tr>
+         </thead>
+         <tbody>
+         <?php foreach ($student['contactList'] as $i): ?>
+            <tr>
+               <td><?php echo $i['relationship']['Type']; ?></td>
+               <td><?php echo $i['identity']['firstName']. ' ' .$i['identity']['lastName']; ?></td>
+               <td>Controls will go here.</td>
+            </tr>
+         <?php endforeach; ?>
+         </tbody>
+      </table>
+      <?php else: ?>
+      <p>This student has no contacts.</p>
+      <?php endif ?>
+      </div>
+   </div>
 
 </div>
-Student Classes:
-<?php if (isset($student['classList'])): ?>
-    <table>
-      <thead>
-         <tr>
-             <th>Class Name</th>
-             <th>Grade Level</th>
-             <th>Teacher</th>
-             <th></th>
-         </tr>
-      </thead>
-      <tbody>
-         <?php foreach ($student['classList'] as $i): ?>
-         <tr>
-              <td><?php echo $i['name']; ?></td>
-              <td><?php echo $i['grade']['name']; ?></td>
-              <td><?php echo $i['teacher']['identity']['firstName'] . ' ' . $i['teacher']['identity']['lastName']; ?></td>
-              <td>Controls will go here</td>
-         </tr>
-         <?php endforeach; ?>
-      </tbody>
-    </table>
-<?php else: ?>
-    <p>This student does not belong to any classes.</p>
-<?php endif; ?>
-</p>
-<p>
-    Student Contact Information:
-    <?php if (isset($student['contactList'])): ?>
-        <table>
-           <thead>
-             <tr>
-                 <th>Relationship</th>
-                 <th>Name</th>
-                 <th></th>
-             </tr>
-           </thead>
-           <tbody>
-             <?php foreach ($student['contactList'] as $i): ?>
-              <tr>
-                  <td><?php echo $i['relationship']['Type']; ?></td>
-                  <td><?php echo $i['identity']['firstName']. ' ' .$i['identity']['lastName']; ?></td>
-                  <td>Controls will go here.</td>
-              </tr>
-             <?php endforeach; ?>
-           </tbody>
-    </table>
-    <?php else: ?>
-    <p>This student has no contacts.</p>
-    <?php endif ?>
-</p>
 <script type="text/javascript">
-//$('#gender, #grade, #school').selectize({create: true});
+$('#gender').selectize();
+$('#grade').selectize();
+$('#school').selectize();
 </script>
