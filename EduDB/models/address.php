@@ -44,7 +44,7 @@ class Address
             'a.city, a.zip, a.zip4, s.stateName, s.abbrv, ' .
             't.addressName, a.Identity_id ' .
             'FROM address AS a ' .
-            'LEFT JOIN AddressType AS t ' .
+            'LEFT JOIN addresstype AS t ' .
             'ON a.Addresstype_id = t.idAddresstype ' .
             'LEFT JOIN state AS s ' .
             'ON a.state_id = s.idstate ' .
@@ -75,6 +75,14 @@ class Address
             'addressType' => $this->addressType,
             'identityId' => $this->identityId
         );
+    }
+
+    public static function newAddress($values) {
+
+    }
+
+    public static function editAddress($values) {
+        
     }
 
     public static function rowCount()

@@ -14,16 +14,13 @@ class Student
     private $classList; // A list of Class Objects
     private $contactList; // A list of Student contacts
 
-
-    public function __construct($studentId, $identityId, $gradeId, $schoolId)
-    {
+    public function __construct($studentId, $identityId, $gradeId, $schoolId) {
         $this->studentId = $studentId;
         $this->identity = Identity::findById($identityId);
         $this->school = School::findById($schoolId);
         $this->grade = Grade::findById($gradeId);
     }
 
-    // We are only doing getters!
     public static function allStudentsAtSchool($schoolId, $start = 0, $number = false)
     {
         $list = [];
@@ -35,7 +32,7 @@ class Student
             'LIMIT :start, :number');
         $request->bindParam(":id", $schoolId, PDO::PARAM_INT);
         $request->bindParam(":start", $start, PDO::PARAM_INT);
-        
+
         $request->bindParam(":number", $number, PDO::PARAM_INT);
         $request->execute();
         foreach ($request->fetchAll() as $student) {

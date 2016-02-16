@@ -5,7 +5,7 @@
  * Date: 2/10/2016
  * Time: 12:03 PM
  */
-
+ require_once('models/address.php');
 class StudentController
 {
     public function listStudentContacts($id=1) {
@@ -51,17 +51,21 @@ class StudentController
             $student->loadClassList();
             $student->loadContactList();
             $student = $student->getValues();
-
+            // Get grades
             $grades = [];
             foreach (Grade::all() as $i) {
                 $grades[] = $i->getValues();
             }
-
+            // Get Schools
             $schools = [];
             foreach (School::all() as $i) {
                 $schools[] = $i->getValues();
             }
-
+            // Get Addresses
+            $addresses = [];
+            foreach (Address::findByIdentityId($_GET['id']) as $i) {
+               $addresses[] = $i->getValues();
+            }
 
             require_once ('views/student/edit.php');
         }
