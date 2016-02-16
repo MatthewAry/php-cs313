@@ -1,30 +1,9 @@
-<div class="modal fade" tabindex="-1" role="dialog" id="imageUpload">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <form class="form-horizontal" enctype="multipart/form-data" action="/EduDB/?controller=identity&action=updateImage" method="post">
-         <div class="modal-header">
-           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-           <h4 class="modal-title">Update Image</h4>
-         </div>
-         <div class="modal-body">
-            <div class="row">
-               <input type="file" name="image_field" value="">
-               <input type="hidden" name="id" value="<?php echo $student['identity']['id']; ?>">
-               <input type="hidden" name="path" value="<?php echo $_SERVER['REQUEST_URI']; ?>">
-            </div>
-         </div>
-         <div class="modal-footer">
-           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-           <button type="submit" name="Submit" value="upload" class="btn btn-primary">Upload File</button>
-         </div>
-      </form>
-    </div>
-  </div>
-</div>
+<?php include_once('views/student/modals/imageModal.php'); ?>
+<?php include_once('views/student/modals/addAddress.php'); ?>
 <div class="container">
    <div class="page-header">
       <h1>View and Modify Student</h1>
-      <a type="button"  href="?controller=student&action=listStudents" class="btn"><i class="material-icons">keyboard_return</i> Return to Student List</a>
+      <a type="button" href="?controller=student&action=listStudents" class="btn"><i class="material-icons">keyboard_return</i> Return to Student List</a>
    </div>
    <form class="form-horizontal" action="?controller=student&action=updateStudent" method="post">
       <div class="panel panel-info">
@@ -77,55 +56,35 @@
             <h2 class="panel-title">Addresses</h2>
          </div>
          <div class="panel-body">
-               <ul class="list-group">
-                  <?php foreach ($addresses as $i): ?>
-                     <li class="list-group-item">
-                        <h4 class="list-group-item-heading">Address ID: <?php echo $i['id'] ?></h3>
-                        <div class="form-group">
-                           <label for="address[<?php echo $i['id']?>][street]" class="col-md-2 control-label">Street</label>
-                           <div class="col-md-10">
-                              <input type="text" value="<?php echo $i['street']; ?>" name="address[<?php echo $i['id']?>][street]" class="form-control">
-                           </div>
+            <?php if (empty($addresses)): ?>
+               <div class="alert alert-dismissible alert-danger">
+                  <button type="button" class="close" data-dismiss="alert">×</button>
+                 No addresses were found for this student.
+               </div>
+            <?php else: ?>
+                <?php foreach ($addresses as $i): ?>
+                    <div class="list-group">
+                        <div class="list-group-item">
+                            <div class="row-content">
+                                <h4><?php echo $i['addressType']; ?></h4>
+                                <div class="col-md-10">
+                                    <?php echo $i['street']; ?><br>
+                                    <?php if ($i['extended'] != ''): ?>
+                                        <?php echo $i['extended']; ?><br>
+                                    <?php endif; ?>
+                                    <?php echo $i['city']; ?> <?php echo $i['stateAbbrv']; ?>,
+                                    <?php echo $i['zip']; ?><?php if ($i['zip4'] != ''): ?>-<?php echo $i['zip4']; ?>
+                                    <?php endif; ?>
+                                </div>
+                                <div class="col-md-2">
+                                    <a class='btn btn-default' name="editAddress<?php echo $i['id']; ?>"><i class="material-icons">mode_edit</i> Edit</a>
+                                </div>
+                            </div>
                         </div>
-                        <div class="form-group">
-                           <label for="address[<?php echo $i['id']?>][extended]" class="col-md-2 control-label">Extended</label>
-                           <div class="col-md-10">
-                              <input type="text" value="<?php echo $i['extended']; ?>" name="address[<?php echo $i['id']?>][extended]" class="form-control">
-                           </div>
-                        </div>
-                        <div class="form-group">
-                           <label for="address[<?php echo $i['id']?>][city]" class="col-md-2 control-label">City</label>
-                           <div class="col-md-10">
-                              <input type="text" value="<?php echo $i['city']; ?>" name="address[<?php echo $i['id']?>][city]" class="form-control">
-                           </div>
-                        </div>
-                        <div class="form-group">
-                           <label for="address[<?php echo $i['id']?>][zip]" class="col-md-2 control-label">Zip Code</label>
-                           <div class="col-md-10">
-                              <input type="text" value="<?php echo $i['zip']; ?>" name="address[<?php echo $i['id']?>][zip]" class="form-control">
-                           </div>
-                        </div>
-                        <div class="form-group">
-                           <label for="address[<?php echo $i['id']?>][zip4]" class="col-md-2 control-label">Zip4</label>
-                           <div class="col-md-10">
-                              <input type="text" value="<?php echo $i['zip4']; ?>" name="address[<?php echo $i['id']?>][zip4]" class="form-control">
-                           </div>
-                        </div>
-                        <div class="form-group">
-                           <label for="address[<?php echo $i['id']?>][stateAbbrv]" class="col-md-2 control-label">State</label>
-                           <div class="col-md-10">
-                              <input type="text" value="<?php echo $i['stateAbbrv']; ?>" name="address[<?php echo $i['id']?>][stateAbbrv]" class="form-control">
-                           </div>
-                        </div>
-                        <div class="form-group">
-                           <label for="address[<?php echo $i['id']?>][addressType]" class="col-md-2 control-label">Type</label>
-                           <div class="col-md-10">
-                              <input type="text" value="<?php echo $i['addressType']; ?>" name="address[<?php echo $i['id']?>][addressType]" class="form-control">
-                           </div>
-                        </div>
-                     </li>
-                  <?php endforeach; ?>
-               </ul>
+                    </div>
+                <?php endforeach; ?>
+            <?php endif; ?>
+            <button data-toggle="modal" data-target="#addAddress" type="button" class="btn btn-default">Add An Address</button>
          </div>
       </div>
       <div class="panel panel-info">
@@ -134,7 +93,7 @@
          </div>
          <div class="panel-body">
             <div class="form-group">
-               <label for="grade" class="col-md-2 control-label">Grade:</label>
+               <label for="grade" class="col-md-2 control-label">Grade</label>
                <div class="col-md-10">
                   <select id="grade" name="grade" class="form-control">
                      <?php foreach ($grades as $i): ?>
@@ -223,7 +182,7 @@
 
 </div>
 <script type="text/javascript">
-$('#gender').selectize();
-$('#grade').selectize();
-$('#school').selectize();
+    $('#gender').selectize();
+    $('#grade').selectize();
+    $('#school').selectize();
 </script>

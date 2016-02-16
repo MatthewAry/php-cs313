@@ -31,6 +31,10 @@ function call($controller, $action)
             require_once('models/sclass.php');
             $controller = new SclassController();
             break;
+        case 'address':
+            require_once('models/address.php');
+            $controller = new AddressController();
+            break;
     }
     $controller->{$action}();
 }
@@ -50,7 +54,8 @@ $controllers = array(
         'listStudents',
         'viewStudent',
         'viewContact',
-        'updateStudent'
+        'updateStudent',
+        'addAddress'
     ],
     'sclass' => [
         'listClasses', 'viewClass'],

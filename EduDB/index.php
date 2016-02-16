@@ -10,5 +10,9 @@ if (isset($_GET['controller']) && isset($_GET['action'])) {
 }
 
 $title = "experimental";
-require_once('views/layout.php');
+if (!isset($_GET['ajax'])) {
+    require_once('views/layout.php');
+} elseif (isset($_GET['ajax']) && $_GET['ajax'] == true) {
+    // AJAX Stuff! Nothing really needs to go here.
+}
 ?>

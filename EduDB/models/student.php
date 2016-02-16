@@ -144,7 +144,6 @@ class Student
             if (isset($values['schoolId'])) {
                 $request->bindParam(":schoolId", $values['schoolId'], PDO::PARAM_STR);
             }
-
             if(!$request->execute()) {
                 return false;
             } else {

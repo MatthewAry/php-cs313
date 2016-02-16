@@ -5,7 +5,7 @@
  * Date: 2/10/2016
  * Time: 12:03 PM
  */
- require_once('models/address.php');
+require_once('models/address.php');
 class StudentController
 {
     public function listStudentContacts($id=1) {
@@ -38,7 +38,6 @@ class StudentController
                 $studentsAtSchool[] = $i->getValues();
             }
         }
-
         require_once('views/student/listStudents.php');
     }
 
@@ -63,10 +62,9 @@ class StudentController
             }
             // Get Addresses
             $addresses = [];
-            foreach (Address::findByIdentityId($_GET['id']) as $i) {
+            foreach (Address::findByIdentityId($student['identity']['id']) as $i) {
                $addresses[] = $i->getValues();
             }
-
             require_once ('views/student/edit.php');
         }
     }
@@ -82,7 +80,6 @@ class StudentController
             require_once ('views/student/editContact.php');
         }
     }
-
 
     public function updateStudent() {
         // So now we need to get POST data.
