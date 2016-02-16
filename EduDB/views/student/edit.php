@@ -24,6 +24,7 @@
 <div class="container">
    <div class="page-header">
       <h1>View and Modify Student</h1>
+      <a type="button"  href="?controller=student&action=listStudents" class="btn"><i class="material-icons">keyboard_return</i> Return to Student List</a>
    </div>
    <form class="form-horizontal" action="?controller=student&action=updateStudent" method="post">
       <div class="panel panel-info">
