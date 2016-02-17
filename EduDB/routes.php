@@ -54,13 +54,18 @@ $controllers = array(
         'listStudents',
         'viewStudent',
         'viewContact',
-        'updateStudent',
-        'addAddress'
+        'updateStudent'
     ],
     'sclass' => [
         'listClasses', 'viewClass'],
     'teacher' => [
-        'viewTeacher']);
+        'viewTeacher'],
+    'address' => [
+        'getAddress',
+        'updateAddress',
+        'newAddressModal',
+        'addAddress',
+        'confirmDelete']);
   if (array_key_exists($controller, $controllers)) {
       if (in_array($action, $controllers[$controller])) {
           call($controller, $action);

@@ -1,5 +1,4 @@
 <?php include_once('views/student/modals/imageModal.php'); ?>
-<?php include_once('views/student/modals/addAddress.php'); ?>
 <div class="container">
    <div class="page-header">
       <h1>View and Modify Student</h1>
@@ -67,7 +66,7 @@
                         <div class="list-group-item">
                             <div class="row-content">
                                 <h4><?php echo $i['addressType']; ?></h4>
-                                <div class="col-md-10">
+                                <div class="col-md-9">
                                     <?php echo $i['street']; ?><br>
                                     <?php if ($i['extended'] != ''): ?>
                                         <?php echo $i['extended']; ?><br>
@@ -76,15 +75,16 @@
                                     <?php echo $i['zip']; ?><?php if ($i['zip4'] != ''): ?>-<?php echo $i['zip4']; ?>
                                     <?php endif; ?>
                                 </div>
-                                <div class="col-md-2">
-                                    <a class='btn btn-default' name="editAddress<?php echo $i['id']; ?>"><i class="material-icons">mode_edit</i> Edit</a>
+                                <div class="col-md-3">
+                                    <a data-toggle="ajaxModal" class='btn btn-sm btn-default' href="?controller=address&action=getAddress&id=<?php echo $i['id']; ?>&ref=student&ajax=true"><i class="material-icons">mode_edit</i> Edit</a>
+                                    <a data-toggle="ajaxModal" class='btn btn-sm' href="?controller=address&action=confirmDelete&id=<?php echo $i['id']; ?>&ref=student&ajax=true" data-toggle="popover" data-placement="top" data-content="Delete Address"><i class="material-icons">delete</i></a>
                                 </div>
                             </div>
                         </div>
                     </div>
                 <?php endforeach; ?>
             <?php endif; ?>
-            <button data-toggle="modal" data-target="#addAddress" type="button" class="btn btn-default">Add An Address</button>
+            <button data-toggle="ajaxModal" type="button" class="btn btn-default" href="?controller=address&action=newAddressModal&ref=student&ajax=true">Add An Address</button>
          </div>
       </div>
       <div class="panel panel-info">
@@ -182,6 +182,31 @@
 
 </div>
 <script type="text/javascript">
+    $('[data-toggle="ajaxModal"]').on('click',
+      function(e) {
+        $('#ajaxModal').remove();
+        e.preventDefault();
+        var $this = $(this)
+          , $remote = $this.data('remote') || $this.attr('href')
+          , $modal = $('<div class="modal fade" id="ajaxModal"><div class="modal-body"></div></div>');
+        $('body').append($modal);
+        $modal.modal({backdrop: 'static', keyboard: false});
+        $fName = "<?php echo $student['identity']['firstName']; ?>";
+        $lName = "<?php echo $student['identity']['lastName']; ?>";
+        $identityId = "<?php echo $student['identity']['id']; ?>";
+        $path = "<?php echo $_SERVER['REQUEST_URI']; ?>";
+        $modal.load($remote, {
+            "firstName": $fName,
+            "lastName": $lName,
+            "identityId": $identityId,
+            "path": $path
+        });
+      }
+    );
+    $('[data-dismiss="modal"]').on('click', function(event) {
+        event.preventDefault();
+        $this.parent('.modal').delay(300).remove();
+    });
     $('#gender').selectize();
     $('#grade').selectize();
     $('#school').selectize();

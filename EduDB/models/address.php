@@ -63,7 +63,6 @@ class Address
 
     public static function findById($id)
     {
-        $list = [];
         $db = Db::getInstance();
         $id = intval($id); // Security
         // Joins matching info from three tables. Can return multiple results.
@@ -79,16 +78,14 @@ class Address
             'WHERE a.idAddress = :id');
         $request->bindParam(":id", $id, PDO::PARAM_INT);
         $request->execute();
-        foreach ($request->fetchAll() as $address) {
-            $list[] = new Address($address['idAddress'], $address['street'],
-                $address['extended'], $address['city'],
-                $address['zip'], $address['zip4'],
-                $address['stateName'], $address['abbrv'],
-                $address['addressName'], $address['Identity_id']);
-        }
-        return $list;
-    }
+        $address = $request->fetch();
 
+        return new Address($address['idAddress'], $address['street'],
+            $address['extended'], $address['city'],
+            $address['zip'], $address['zip4'],
+            $address['stateName'], $address['abbrv'],
+            $address['addressName'], $address['Identity_id']);
+    }
 
     public function getValues()
     {
@@ -158,8 +155,8 @@ class Address
             $request = $db->prepare(
                 'UPDATE address '.
                 'SET street=:street, extended=:extended, city=:city, zip=:zip, '.
-                'zip4=:zip4, state_id=:stateId, AddressType_id=:addressTypeId'.
-                'WHERE addressId = :id'
+                'zip4=:zip4, state_id=:stateId, AddressType_id=:addressTypeId '.
+                'WHERE idAddress = :id'
             );
             $request->bindParam(":street", $values['street'], PDO::PARAM_STR);
             $request->bindParam(":extended", $values['extended'], PDO::PARAM_STR);

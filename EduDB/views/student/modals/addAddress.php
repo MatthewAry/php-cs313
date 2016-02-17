@@ -1,10 +1,9 @@
-<div class="modal fade" tabindex="-1" role="dialog" id="addAddress">
   <div class="modal-dialog">
     <div class="modal-content">
       <form class="form-horizontal" action="?controller=address&action=addAddress" method="post">
          <div class="modal-header">
            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-           <h4 class="modal-title">Add Address To <?php echo $student['identity']['firstName']; ?> <?php echo $student['identity']['lastName']; ?></h4>
+           <h4 class="modal-title">Add Address To <?php echo $_POST['firstName']; ?> <?php echo $_POST['lastName']; ?></h4>
          </div>
          <div class="modal-body">
             <div class="row">
@@ -60,8 +59,8 @@
                       </select>
                    </div>
                 </div>
-               <input type="hidden" name="identityId" value="<?php echo $student['identity']['id']; ?>">
-               <input type="hidden" name="path" value="<?php echo $_SERVER['REQUEST_URI']; ?>">
+               <input type="hidden" name="identityId" value="<?php echo $_POST['identityId']; ?>">
+               <input type="hidden" name="path" value="<?php echo $_POST['path']; ?>">
             </div>
          </div>
          <div class="modal-footer">
@@ -70,9 +69,8 @@
          </div>
       </form>
     </div>
+    <script type="text/javascript">
+        $('#addAddress #state').selectize();
+        $('#addAddress #type').selectize();
+    </script>
   </div>
-</div>
-<script type="text/javascript">
-    $('#addAddress #state').selectize();
-    $('#addAddress #type').selectize();
-</script>

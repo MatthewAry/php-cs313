@@ -13,6 +13,6 @@ $title = "experimental";
 if (!isset($_GET['ajax'])) {
     require_once('views/layout.php');
 } elseif (isset($_GET['ajax']) && $_GET['ajax'] == true) {
-    // AJAX Stuff! Nothing really needs to go here.
+    require_once('routes.php');
 }
 ?>

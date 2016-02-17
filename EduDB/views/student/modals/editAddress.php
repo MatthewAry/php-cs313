@@ -1,10 +1,9 @@
-<div class="modal fade" tabindex="-1" role="dialog" id="editAddress">
   <div class="modal-dialog">
     <div class="modal-content">
-      <form class="form-horizontal" action="?controller=student&action=addAddress" method="post">
+      <form class="form-horizontal" action="?controller=address&action=updateAddress" method="post">
          <div class="modal-header">
            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-           <h4 class="modal-title">Edit Address for <?php echo $_POST['firstName']; ?> <?php echo $_POST['lastName']; ?></h4>
+           <h4 class="modal-title">Edit Address For <?php echo $_POST['firstName']; ?> <?php echo $_POST['lastName']; ?></h4>
          </div>
          <div class="modal-body">
             <div class="row">
@@ -44,7 +43,7 @@
                       <select id="state" name="state" class="form-control">
                          <option>Select A State</option>
                          <?php foreach (Address::getStates() as $i): ?>
-                         <option value="<?php echo $i['id']; ?>"<?php if ($address['stateAbbv'] == $i['abbrv']): ?> selected<?php endif; ?>><?php echo $i['name']; ?></option>
+                         <option value="<?php echo $i['id']; ?>"<?php if ($address['stateAbbrv'] == $i['abbrv']): ?> selected<?php endif; ?>><?php echo $i['name']; ?></option>
                          <?php endforeach; ?>
                       </select>
                    </div>
@@ -55,24 +54,24 @@
                       <select id="type" name="type" class="form-control">
                          <option>Select A Type</option>
                          <?php foreach (Address::getTypes() as $i): ?>
-                         <option value="<?php echo $i['id']; ?>"<?php if ($i['addressType'] == $address['addressType']): ?> selected<?php endif; ?>><?php echo $i['name']; ?></option>
+                         <option value="<?php echo $i['id']; ?>"<?php if ($i['name'] == $address['addressType']): ?> selected<?php endif; ?>><?php echo $i['name']; ?></option>
                          <?php endforeach; ?>
                       </select>
                    </div>
                 </div>
-               <input type="hidden" name="identityId" value="<?php echo $student['identity']['id']; ?>">
-               <input type="hidden" name="path" value="<?php echo $_SERVER['REQUEST_URI']; ?>">
+                <input type="hidden" name="identityId" value="<?php echo $address['identityId']; ?>">
+                <input type="hidden" name="id" value="<?php echo $address['id']; ?>">
+               <input type="hidden" name="path" value="<?php echo $_POST['path']; ?>">
             </div>
          </div>
          <div class="modal-footer">
            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-           <button type="submit" name="Submit" value="add" class="btn btn-primary">Add</button>
+           <button type="submit" name="Submit" value="add" class="btn btn-primary">Submit</button>
          </div>
       </form>
+      <script type="text/javascript">
+          $('#editAddress #state').selectize();
+          $('#editAddress #type').selectize();
+      </script>
     </div>
   </div>
-</div>
-<script type="text/javascript">
-    $('#editAddress #state').selectize();
-    $('#editAddress #type').selectize();
-</script>
