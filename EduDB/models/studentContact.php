@@ -53,7 +53,7 @@ class StudentContact
                 'type' => $i['type']
             );
         }
-
+        // $id is studentID
         return new StudentContact(self::STUDENT_CONTACTS, $list, $id);
     }
 
@@ -81,13 +81,13 @@ class StudentContact
         // We are getting a list of Identities
         foreach ($request->fetchAll() as $i) {
             $relationships[] = array(
-                'id' => $i['id'],
+                'id' => $i['id'], // the primary key for the table row of student_to_identity
                 'studentID' => $i['Student_id'],
                 'relationshipID' => $i['Relationship_id'],
                 'type' => $i['type']
             );
         }
-
+        // $id is identityID
         return new StudentContact(self::CONTACT_STUDENTS, $relationships, $id);
     }
 
@@ -96,6 +96,7 @@ class StudentContact
         return array(
             'type' => $this->type,
             'relationships' => $this->relationships,
+            // Depending on the type, the id can belong to a student or to an identity
             'id' => $this->id
         );
     }

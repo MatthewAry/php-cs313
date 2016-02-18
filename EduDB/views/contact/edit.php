@@ -1,4 +1,8 @@
 <div class="container">
+    <pre>
+        <?php print_r($identity); print_r($result); print_r($list) ?>
+    </pre>
+
     <div class="page-header">
         <h1>View and Modify Student Contact</h1>
     </div>

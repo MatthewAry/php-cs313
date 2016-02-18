@@ -79,18 +79,6 @@ class StudentController
         }
     }
 
-    public function viewContact() {
-        if (!isset($_GET['id'])) {
-            $_SESSION['Error'] = "You can't view student contacts without having an ID.";
-        } else {
-            require_once ('models/studentContact.php');
-            $contact = StudentContact::findById($_GET['id']);
-            $contact = $contact->getValues();
-            // Load Contact
-            require_once ('views/student/editContact.php');
-        }
-    }
-
     public function updateStudent() {
         // So now we need to get POST data.
 

@@ -37,7 +37,8 @@ function call($controller, $action)
             break;
         case 'contact':
             require_once('models/studentContact.php');
-            $conroller = new ContactController();
+            $controller = new ContactController();
+            break;
     }
     $controller->{$action}();
 }
@@ -57,7 +58,6 @@ $controllers = array(
         'listStudentContacts',
         'listStudents',
         'viewStudent',
-        'viewContact',
         'updateStudent'
     ],
     'sclass' => [
@@ -70,7 +70,10 @@ $controllers = array(
         'newAddressModal',
         'addAddress',
         'confirmDelete',
-        'delete']);
+        'delete'],
+    'contact' => [
+        'viewContact'
+        ]);
   if (array_key_exists($controller, $controllers)) {
       if (in_array($action, $controllers[$controller])) {
           call($controller, $action);
