@@ -13,7 +13,7 @@
                <div class="col-md-2" style="text-align: center;" >
                   <img src="<?php echo $student['identity']['image'] ?>" alt="<?php echo $student['identity']['firstName']; ?>
                   <?php echo $student['identity']['lastName']; ?>">
-                  <a data-toggle="ajaxModal" href="?controller=identity&action=updateImageModal&ajax=true" class="btn btn-default">Change Image</a>
+                  <button data-toggle="modal" data-target="#imageUpload" type="button" class="btn btn-default">Change Image</button>
                </div>
                <div class="col-md-10">
                   <h4>Student ID: <?php echo $student['id']; ?></h4>
@@ -45,7 +45,6 @@
                      </div>
                   </div>
                </div>
-
             </div>
          </div>
       </div>
@@ -167,8 +166,8 @@
          <?php foreach ($student['contactList'] as $i): ?>
             <tr>
                <td><?php echo $i['relationship']; ?></td>
-               <td><?php echo $i['identity']['firstName']. ' ' .$i['identity']['lastName']; ?></td>
-               <td>Controls will go here.</td>
+               <td><?php echo $i['identity']['firstName'] . ' ' . $i['identity']['lastName']; ?></td>
+               <td><a class="btn" href="?controller=contact&action=viewContact&id=<?php echo $i['identity']['id']; ?>">View</a></td>
             </tr>
          <?php endforeach; ?>
          </tbody>
@@ -200,7 +199,12 @@
             "identityId": $identityId,
             "path": $path
         });
-      });
+      }
+    );
+    $('[data-dismiss="modal"]').on('click', function(event) {
+        event.preventDefault();
+        $this.parent('.modal').delay(300).remove();
+    });
     $('#gender').selectize();
     $('#grade').selectize();
     $('#school').selectize();

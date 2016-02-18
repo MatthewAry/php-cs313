@@ -9,13 +9,11 @@ class ContactController {
             require_once ('models/identity.php');
             // Get identity of contact
             $identity = Identity::findById($_GET['id']);
+            $identity = $identity->getValues();
 
-            // Get students belonging to contact
-            $result = StudentContact::findByIdentityId($_GET['id']);
-            $result = $result->getValues();
             // Load Contact
             $list = [];
-            foreach ($result['relationships'] as $i) {
+            foreach (StudentContact::findByIdentityId($_GET['id'])->getValues()['relationships'] as $i) {
                 $list[] = array(
                     'relationship' => $i['type'],
                     'student' => Student::findById($i['studentID'])->getValues()

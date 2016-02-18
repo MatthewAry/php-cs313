@@ -14,3 +14,13 @@
 .form-group {
   margin: initial;
 }
+
+/* line 12, ../sass/screen.scss */
+.table > tbody > tr > td {
+  vertical-align: middle;
+}
+/* line 14, ../sass/screen.scss */
+.table > tbody > tr > td .btn {
+  margin-top: 1px;
+  margin-bottom: 1px;
+}

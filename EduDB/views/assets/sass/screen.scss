@@ -9,3 +9,10 @@
 .form-group {
    margin: initial;
 }
+.table>tbody>tr>td {
+    vertical-align: middle;
+    .btn {
+        margin-top: 1px;
+        margin-bottom: 1px;
+    }
+}
