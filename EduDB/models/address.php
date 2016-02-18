@@ -177,6 +177,17 @@ class Address
         }
     }
 
+    public static function deleteAddress($id) {
+        $db = Db::getInstance();
+        $request = $db->prepare('DELETE FROM address WHERE idAddress = :id');
+        $request->bindParam(":id", $id, PDO::PARAM_INT);
+        if (!$request->execute()) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
     public static function rowCount()
     {
         $db = Db::getInstance();

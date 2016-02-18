@@ -1,4 +1,3 @@
-<?php include_once('views/student/modals/imageModal.php'); ?>
 <div class="container">
    <div class="page-header">
       <h1>View and Modify Student</h1>
@@ -14,7 +13,7 @@
                <div class="col-md-2" style="text-align: center;" >
                   <img src="<?php echo $student['identity']['image'] ?>" alt="<?php echo $student['identity']['firstName']; ?>
                   <?php echo $student['identity']['lastName']; ?>">
-                  <button data-toggle="modal" data-target="#imageUpload" type="button" class="btn btn-default">Change Image</button>
+                  <a data-toggle="ajaxModal" href="?controller=identity&action=updateImageModal&ajax=true" class="btn btn-default">Change Image</a>
                </div>
                <div class="col-md-10">
                   <h4>Student ID: <?php echo $student['id']; ?></h4>
@@ -201,12 +200,7 @@
             "identityId": $identityId,
             "path": $path
         });
-      }
-    );
-    $('[data-dismiss="modal"]').on('click', function(event) {
-        event.preventDefault();
-        $this.parent('.modal').delay(300).remove();
-    });
+      });
     $('#gender').selectize();
     $('#grade').selectize();
     $('#school').selectize();

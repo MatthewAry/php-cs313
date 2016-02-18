@@ -63,7 +63,6 @@ class Identity
             $identity['id_Image_uri']);
     }
 
-
     // Getter
     public function getValues()
     {

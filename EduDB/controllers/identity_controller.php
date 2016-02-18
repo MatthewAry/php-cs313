@@ -24,6 +24,12 @@
          require_once('views/identity/list.php');
       }
 
+       public static function updateImageModal() {
+           $identityID = $_POST['identityId'];
+           $path = $_POST['path'];
+           include_once('views/identity/modals/imageModal.php');
+       }
+
        public function updateImage() {
            require_once('helpers/upload.php');
            $code = '';

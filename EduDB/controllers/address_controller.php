@@ -22,12 +22,14 @@ class AddressController {
             'identityId' => $_POST['identityId']
         );
         Address::newAddress($address);
+        // YES I know redirects are stupid when used like this.
         header("Location: " . $_POST['path']);
     }
 
     public function getAddress() {
         $address = Address::findById($_GET['id']);
         $address = $address->getValues();
+        // Bad Coupling
         if (isset($_GET['ref'])) {
             if ($_GET['ref'] == 'student') {
                 include_once('views/student/modals/editAddress.php');
@@ -49,6 +51,7 @@ class AddressController {
             'identityId' => $_POST['identityId']
         );
         Address::editAddress($address);
+        // Redirects are still stupic!
         header("Location: " . $_POST['path']);
     }
 
@@ -63,7 +66,12 @@ class AddressController {
         }
     }
 
+    // HMM There can be more security for this...
     public function delete() {
-
+        if (!Address::deleteAddress($_POST['id'])) {
+            $_SESSION['ERROR'] = "Unable to delete address.";
+        }
+        // YES I KNOW: REDIRECTS ARE STUPID
+        header("LOCATION: ". $_POST['path']);
     }
 }

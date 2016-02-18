@@ -76,6 +76,22 @@ class StudentContact
             $result['Relationship_id']);
     }
 
+    public static function findByIdentityId($id) {
+        $list = [];
+        $db = Db::getInstance();
+        $request = $db->prepare('SELECT * FROM student_to_identity '.
+                                'WHERE Identity_id = :id');
+        if (!$request->execute()) {
+            return false;
+        }
+        foreach ($request->fetchAll() as $i) {
+            $list[] = new StudentContact($i['id'], $i['Student_id'],
+                $i['Identity_id'],
+                $i['Relationship_id']);
+        }
+        return $list;
+    }
+
     public function getValues()
     {
         return array('id' => $this->id, 'studentID' => $this->studentID,

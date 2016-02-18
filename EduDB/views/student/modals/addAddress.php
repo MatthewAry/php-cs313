@@ -65,7 +65,7 @@
          </div>
          <div class="modal-footer">
            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-           <button type="submit" name="Submit" value="add" class="btn btn-primary">Add</button>
+           <button type="submit" name="Submit" value="add" class="btn btn-info btn-raised">Add</button>
          </div>
       </form>
     </div>

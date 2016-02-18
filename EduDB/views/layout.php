@@ -14,6 +14,11 @@
       <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/0.5.8/js/material.min.js"></script>
       <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/0.5.8/js/ripples.min.js"></script>
       <script src="//cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.1/js/standalone/selectize.js"></script>
+      <script type="text/javascript">
+      $(function () {
+        $.material.init();
+      });
+      </script>
    </head>
    <body>
       <header>
