@@ -166,7 +166,7 @@
          <tbody>
          <?php foreach ($student['contactList'] as $i): ?>
             <tr>
-               <td><?php echo $i['relationship']['Type']; ?></td>
+               <td><?php echo $i['relationship']; ?></td>
                <td><?php echo $i['identity']['firstName']. ' ' .$i['identity']['lastName']; ?></td>
                <td>Controls will go here.</td>
             </tr>

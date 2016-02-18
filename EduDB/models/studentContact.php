@@ -2,108 +2,102 @@
 require_once('models/identity.php');
 class StudentContact
 {
-    // A student contact should contain a list of other students it has a
+    // A student contact should contain a list of other identities it has a
     // relationship to.
+    const STUDENT_CONTACTS = 1;
+    const CONTACT_STUDENTS = 0;
+    // contact has many students(0) OR student has many contacts(1)
+    private $type;
 
+    // [n][id, Student_id/Identity_id, Relationship_id, Relationship]
+    // ID is the id contained in student_to_identity
+    private $relationships;
+
+    // Depending on the type, the id can belong to a student or to an identity
     private $id;
-    private $studentID;
-    private $identityID;
-    private $relationshipID;
-    private $relationship;
-    private $identity;
 
-    private function getIdentity($identityID)
+    public function __construct($type, $relationships, $id)
     {
-        $this->identity = Identity::findById($identityID);
-    }
-
-    private function getRelationship($id)
-    {
-        $db = Db::getInstance();
-        $request = $db->prepare('SELECT Type FROM relationship ' .
-            'WHERE idRelationship = :id');
-        $request->bindParam(":id", $id, PDO::PARAM_INT);
-        $request->execute();
-        $this->relationship = $request->fetch();
-    }
-
-    //private function findAll
-
-    public static function getRelationships() {
-        $db = Db::getInstance();
-        $request = $db->prepare('SELECT * FROM relationship ');
-        $request->execute();
-        $list = [];
-        foreach ($request->fetchAll() as $i) {
-            $list[] = array("id" => $i['idRelationship'], "type" => $i['Type']);
+        if (!($type == 0 || $type == 1)) {
+            throw new Exception("Type must be 0 or 1.");
         }
-        return $list;
+        $this->type = $type;
+        $this->relationships = $relationships;
+        $this->$id = $id; // This can be a student ID or an Identity id depending on the type.
     }
 
-    public function __construct($id, $studentID, $identityID, $relationshipID)
-    {
-        $this->id = $id;
-        $this->studentID = $studentID;
-        $this->identityID = $identityID;
-        $this->relationshipID = $relationshipID;
-        $this->getRelationship($relationshipID);
-        $this->getIdentity($identityID);
-    }
-
-    // Returns a list of Student Contacts
+    // For student view only!
     public static function findByStudentId($id)
     {
-        $list = [];
         $db = Db::getInstance();
-        $request = $db->prepare('SELECT * FROM student_to_identity ' .
+        $request = $db->prepare('SELECT si.id, si.Identity_id, '.
+                                'si.Relationship_id, r.type '.
+                                'FROM student_to_identity AS si '.
+                                'LEFT JOIN relationship AS r '.
+                                'ON si.Relationship_id = r.idRelationship '.
                                 'WHERE Student_id = :id');
         $request->bindParam(":id", $id, PDO::PARAM_INT);
-        $request->execute();
-        foreach ($request->fetchAll() as $result) {
-            $list[] = new StudentContact($result['id'], $result['Student_id'],
-                $result['Identity_id'],
-                $result['Relationship_id']);
+        if(!$request->execute()) {
+            $string = "Unable to execute studentContact::findByStudentId() ".
+                      "USING $id";
+            die($string);
         }
-        return $list;
+
+        $list = [];
+        // We are getting a list of Identities
+        foreach ($request->fetchAll() as $i) {
+            $list[] = array(
+                'id' => $i['id'], // the primary key for the table row of student_to_identity
+                'identityID' => $i['Identity_id'],
+                'relationshipID' => $i['Relationship_id'],
+                'type' => $i['type']
+            );
+        }
+
+        return new StudentContact(self::STUDENT_CONTACTS, $list, $id);
     }
 
     public static function findById($id)
     {
-        $list = [];
-        $db = Db::getInstance();
-        $request = $db->prepare('SELECT * FROM student_to_identity ' .
-                                'WHERE id = :id');
-        $request->bindParam(":id", $id, PDO::PARAM_INT);
-        $request->execute();
-        $result = $request->fetch();
-        return new StudentContact($result['id'], $result['Student_id'],
-            $result['Identity_id'],
-            $result['Relationship_id']);
+
     }
 
     public static function findByIdentityId($id) {
-        $list = [];
         $db = Db::getInstance();
-        $request = $db->prepare('SELECT * FROM student_to_identity '.
+        $request = $db->prepare('SELECT si.id, si.Student_id, '.
+                                'si.Relationship_id, r.type '.
+                                'FROM student_to_identity AS si '.
+                                'LEFT JOIN relationship AS r '.
+                                'ON si.Relationship_id = r.idRelationship '.
                                 'WHERE Identity_id = :id');
-        if (!$request->execute()) {
-            return false;
+        $request->bindParam(":id", $id, PDO::PARAM_INT);
+        if(!$request->execute()) {
+            $string = "Unable to execute studentContact::findByIdentityId() ".
+                      "USING $id";
+            die($string);
         }
+
+        $relationships = [];
+        // We are getting a list of Identities
         foreach ($request->fetchAll() as $i) {
-            $list[] = new StudentContact($i['id'], $i['Student_id'],
-                $i['Identity_id'],
-                $i['Relationship_id']);
+            $relationships[] = array(
+                'id' => $i['id'],
+                'studentID' => $i['Student_id'],
+                'relationshipID' => $i['Relationship_id'],
+                'type' => $i['type']
+            );
         }
-        return $list;
+
+        return new StudentContact(self::CONTACT_STUDENTS, $relationships, $id);
     }
 
     public function getValues()
     {
-        return array('id' => $this->id, 'studentID' => $this->studentID,
-            'identityID' => $this->identityID,
-            'relationshipID' => $this->relationshipID,
-            'relationship' => $this->relationship,
-            'identity' => $this->identity->getValues());
+        return array(
+            'type' => $this->type,
+            'relationships' => $this->relationships,
+            'id' => $this->id
+        );
     }
 
     public static function rowCount()

@@ -6,18 +6,28 @@
  * Time: 12:03 PM
  */
 require_once('models/address.php');
+require_once('models/studentContact.php');
+require_once('models/identity.php');
 class StudentController
 {
     public function listStudentContacts($id=1) {
-        $start = 0;
-        $number = 50;
-        $records = Student::rowCount();
         $studentList = Student::all($start, $records);
 
         if (isset($_POST['studentID'])) {
             $id = $_POST['studentID'];
         }
-        $studentContacts = StudentContact::findByStudentId($id);
+        $studentContacts = StudentContact::findByStudentId($id)->getValues();
+        $temp = [];
+        foreach ($studentContacts['relationships'] as $i) {
+            $temp[] = array(
+                'id' => $i['id'],
+                'identityID' => $i['identityID'],
+                'relationshipID' => $i['relationshipID'],
+                'type' => $i['type'],
+                'identity' => Identity::findById($i['identityID'])->getValues()
+            );
+        }
+        $studentContacts = array();
         require_once('views/student/listContacts.php');
     }
 

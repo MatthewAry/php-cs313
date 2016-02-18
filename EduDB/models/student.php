@@ -58,11 +58,14 @@ class Student
         return $values;
     }
 
-    public static function all($start, $number) {
+    public static function all($start=0, $number=false) {
         $list = [];
         $db = Db::getInstance();
         $request = $db->prepare('SELECT * FROM student LIMIT :start, :number');
         $request->bindParam(":start", $start, PDO::PARAM_INT);
+        if (!$number) {
+            $number = self::rowCount();
+        }
         $request->bindParam(":number", $number, PDO::PARAM_INT);
         $request->execute();
         foreach ($request->fetchAll() as $student) {
@@ -100,10 +103,17 @@ class Student
 
     public function loadContactList()
     {
-        $list = StudentContact::findByStudentId($this->studentId);
-        foreach ($list as $i) {
-            $this->contactList[] = $i->getValues();
+        $result = StudentContact::findByStudentId($this->studentId);
+        $result = $result->getValues();
+        $list = [];
+        foreach ($result['relationships'] as $i) {
+            $list[] = array(
+                'relationship' => $i['type'],
+                'identity' => Identity::findById($i['identityID'])->getValues()
+            );
         }
+        $this->contactList = $list;
+        //$contactList[n][relationship, identity[values]]
     }
 
     public static function updateStudent($values) {

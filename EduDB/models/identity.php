@@ -75,6 +75,10 @@ class Identity
             'image' => $this->imageURI);
     }
 
+    public function getID() {
+        return $this->id;
+    }
+
     public static function updateImage($id, $uri) {
         $i = self::findById($id);
         $i = $i->getValues();

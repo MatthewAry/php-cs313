@@ -20,7 +20,7 @@ foreach ($studentContacts as $i): $i = $i->getValues(); ?>
     Student ID: <?php echo $i['studentID']; ?><br>
     Identity ID: <?php echo $i['identityID']; ?><br>
     Relationship ID: <?php echo $i['relationshipID']; ?><br>
-    Relationship: <?php echo $i['relationship']['Type']; ?><br>
+    Relationship: <?php echo $i['type']; ?><br>
     ---Identity Information---<br>
     &nbsp;&nbsp;&nbsp;&nbsp;ID: <?php echo $i['identity']['id']; ?><br>
     &nbsp;&nbsp;&nbsp;&nbsp;First Name: <?php echo $i['identity']['firstName']; ?><br>
