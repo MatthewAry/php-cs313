@@ -13,7 +13,7 @@
                <div class="col-md-2" style="text-align: center;" >
                   <img src="<?php echo $student['identity']['image'] ?>" alt="<?php echo $student['identity']['firstName']; ?>
                   <?php echo $student['identity']['lastName']; ?>">
-                  <button data-toggle="modal" data-target="#imageUpload" type="button" class="btn btn-default">Change Image</button>
+                  <a data-toggle="ajaxModal" href="?controller=identity&action=updateImageModal&ajax=true" class="btn btn-default">Change Image</a>
                </div>
                <div class="col-md-10">
                   <h4>Student ID: <?php echo $student['id']; ?></h4>
