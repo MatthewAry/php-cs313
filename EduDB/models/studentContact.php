@@ -2,6 +2,9 @@
 require_once('models/identity.php');
 class StudentContact
 {
+    // A student contact should contain a list of other students it has a
+    // relationship to.
+
     private $id;
     private $studentID;
     private $identityID;
@@ -23,6 +26,8 @@ class StudentContact
         $request->execute();
         $this->relationship = $request->fetch();
     }
+
+    //private function findAll
 
     public static function getRelationships() {
         $db = Db::getInstance();
