@@ -51,7 +51,7 @@
                 <h2 class="panel-title">Addresses</h2>
             </div>
             <div class="panel-body">
-
+                I haven't built this yet.
             </div>
         </div>
         <div class="panel panel-info">
@@ -59,7 +59,7 @@
                 <h2 class="panel-title">Phone Numbers</h2>
             </div>
             <div class="panel-body">
-
+                I haven't built this yet.
             </div>
         </div>
         <div class="panel panel-info">
