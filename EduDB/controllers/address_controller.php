@@ -1,13 +1,9 @@
 <?php
 class AddressController {
     public function newAddressModal() {
-        if (isset($_GET['ref'])) {
-            if ($_GET['ref'] == 'student') {
-                include_once('views/student/modals/addAddress.php');
-            }
-            // Potential for teachers and for contacts
-        }
+        include_once('views/identity/modals/addAddress.php');
     }
+
     public function addAddress() {
         // TODO: VALIDATE INPUT!
 
@@ -29,13 +25,7 @@ class AddressController {
     public function getAddress() {
         $address = Address::findById($_GET['id']);
         $address = $address->getValues();
-        // Bad Coupling
-        if (isset($_GET['ref'])) {
-            if ($_GET['ref'] == 'student') {
-                include_once('views/student/modals/editAddress.php');
-            }
-            // Potential for teachers and for contacts
-        }
+        include_once('views/identity/modals/editAddress.php');
     }
 
     public function updateAddress() {
@@ -58,12 +48,7 @@ class AddressController {
     public function confirmDelete() {
         $address = Address::findById($_GET['id']);
         $address = $address->getValues();
-        if (isset($_GET['ref'])) {
-            if ($_GET['ref'] == 'student') {
-                include_once('views/student/modals/confirmAddressDelete.php');
-            }
-            // Potential for teachers and for contacts
-        }
+        include_once('views/identity/modals/confirmAddressDelete.php');
     }
 
     // HMM There can be more security for this...

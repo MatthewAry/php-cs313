@@ -7,14 +7,21 @@ class ContactController {
             require_once ('models/student.php');
             require_once ('models/studentContact.php');
             require_once ('models/identity.php');
+            require_once ('models/address.php');
             // Get identity of contact
             $identity = Identity::findById($_GET['id']);
             $identity = $identity->getValues();
 
+            // Get addresses belonging to identity
+            $addresses = [];
+            foreach (Address::findByIdentityId($_GET['id']) as $i) {
+                $addresses[] = $i->getValues();
+            }
+
             // Load Contact
-            $list = [];
+            $students = [];
             foreach (StudentContact::findByIdentityId($_GET['id'])->getValues()['relationships'] as $i) {
-                $list[] = array(
+                $students[] = array(
                     'relationship' => $i['type'],
                     'student' => Student::findById($i['studentID'])->getValues()
                 );

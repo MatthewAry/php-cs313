@@ -1,4 +1,5 @@
 <div class="container">
+    <?php print_r($addresses); ?>
     <div class="page-header">
         <h1>View and Modify Student Contact</h1>
     </div>
@@ -51,7 +52,36 @@
                 <h2 class="panel-title">Addresses</h2>
             </div>
             <div class="panel-body">
-                I haven't built this yet.
+                <?php if (empty($addresses)): ?>
+                   <div class="alert alert-dismissible alert-danger">
+                      <button type="button" class="close" data-dismiss="alert">×</button>
+                     No addresses were found for this contact.
+                   </div>
+                <?php else: ?>
+                    <?php foreach ($addresses as $i): ?>
+                        <div class="list-group">
+                            <div class="list-group-item">
+                                <div class="row-content">
+                                    <h4><?php echo $i['addressType']; ?></h4>
+                                    <div class="col-md-9">
+                                        <?php echo $i['street']; ?><br>
+                                        <?php if ($i['extended'] != ''): ?>
+                                            <?php echo $i['extended']; ?><br>
+                                        <?php endif; ?>
+                                        <?php echo $i['city']; ?> <?php echo $i['stateAbbrv']; ?>,
+                                        <?php echo $i['zip']; ?><?php if ($i['zip4'] != ''): ?>-<?php echo $i['zip4']; ?>
+                                        <?php endif; ?>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <a data-toggle="ajaxModal" class='btn btn-sm btn-default' href="?controller=address&action=getAddress&id=<?php echo $i['id']; ?>&ref=student&ajax=true"><i class="material-icons">mode_edit</i> Edit</a>
+                                        <a data-toggle="ajaxModal" class='btn btn-sm' href="?controller=address&action=confirmDelete&id=<?php echo $i['id']; ?>&ref=student&ajax=true" data-toggle="popover" data-placement="top" data-content="Delete Address"><i class="material-icons">delete</i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+                <button data-toggle="ajaxModal" type="button" class="btn btn-default" href="?controller=address&action=newAddressModal&ajax=true">Add An Address</button>
             </div>
         </div>
         <div class="panel panel-info">
@@ -67,7 +97,7 @@
                 <h2 class="panel-title">Contact For</h2>
             </div>
             <div class="panel-body">
-                <?php if (!empty($list)): ?>
+                <?php if (!empty($students)): ?>
                     <table class="table table-striped table-hover">
                         <thead>
                             <tr>
@@ -78,7 +108,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <?php foreach ($list as $i): ?>
+                            <?php foreach ($students as $i): ?>
                             <tr>
                                 <td><?php echo $i['relationship']; ?></td>
                                 <td><?php echo $i['student']['identity']['firstName']; ?> <?php echo $i['student']['identity']['lastName']; ?></td>

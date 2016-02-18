@@ -82,7 +82,7 @@
                     </div>
                 <?php endforeach; ?>
             <?php endif; ?>
-            <button data-toggle="ajaxModal" type="button" class="btn btn-default" href="?controller=address&action=newAddressModal&ref=student&ajax=true">Add An Address</button>
+            <button data-toggle="ajaxModal" type="button" class="btn btn-default" href="?controller=address&action=newAddressModal&ajax=true">Add An Address</button>
          </div>
       </div>
       <div class="panel panel-info">
