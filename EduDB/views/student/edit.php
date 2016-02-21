@@ -13,7 +13,7 @@
                <div class="col-md-2" style="text-align: center;" >
                   <img src="<?php echo $student['identity']['image'] ?>" alt="<?php echo $student['identity']['firstName']; ?>
                   <?php echo $student['identity']['lastName']; ?>">
-                  <a data-toggle="ajaxModal" href="?controller=identity&action=updateImageModal&ajax=true" class="btn btn-default">Change Image</a>
+                  <button type="button" data-toggle="ajaxModal" href="?controller=identity&action=updateImageModal&ajax=true" class="btn btn-default">Change Image</button>
                </div>
                <div class="col-md-10">
                   <h4>Student ID: <?php echo $student['id']; ?></h4>
@@ -59,28 +59,28 @@
                  No addresses were found for this student.
                </div>
             <?php else: ?>
+                <div class="list-group">
                 <?php foreach ($addresses as $i): ?>
-                    <div class="list-group">
-                        <div class="list-group-item">
-                            <div class="row-content">
-                                <h4><?php echo $i['addressType']; ?></h4>
-                                <div class="col-md-9">
-                                    <?php echo $i['street']; ?><br>
-                                    <?php if ($i['extended'] != ''): ?>
-                                        <?php echo $i['extended']; ?><br>
-                                    <?php endif; ?>
-                                    <?php echo $i['city']; ?> <?php echo $i['stateAbbrv']; ?>,
-                                    <?php echo $i['zip']; ?><?php if ($i['zip4'] != ''): ?>-<?php echo $i['zip4']; ?>
-                                    <?php endif; ?>
-                                </div>
-                                <div class="col-md-3">
-                                    <a data-toggle="ajaxModal" class='btn btn-sm btn-default' href="?controller=address&action=getAddress&id=<?php echo $i['id']; ?>&ref=student&ajax=true"><i class="material-icons">mode_edit</i> Edit</a>
-                                    <a data-toggle="ajaxModal" class='btn btn-sm' href="?controller=address&action=confirmDelete&id=<?php echo $i['id']; ?>&ref=student&ajax=true" data-toggle="popover" data-placement="top" data-content="Delete Address"><i class="material-icons">delete</i></a>
-                                </div>
+                    <div class="list-group-item">
+                        <div class="row-content">
+                            <h4><?php echo $i['addressType']; ?></h4>
+                            <div class="col-md-9">
+                                <?php echo $i['street']; ?><br>
+                                <?php if ($i['extended'] != ''): ?>
+                                    <?php echo $i['extended']; ?><br>
+                                <?php endif; ?>
+                                <?php echo $i['city']; ?> <?php echo $i['stateAbbrv']; ?>,
+                                <?php echo $i['zip']; ?><?php if ($i['zip4'] != ''): ?>-<?php echo $i['zip4']; ?>
+                                <?php endif; ?>
+                            </div>
+                            <div class="col-md-3">
+                                <button data-toggle="ajaxModal" class='btn btn-sm btn-default' href="?controller=address&action=getAddress&id=<?php echo $i['id']; ?>&ajax=true"><i class="material-icons">mode_edit</i> Edit</button>
+                                <button data-toggle="ajaxModal" class='btn btn-sm' href="?controller=address&action=confirmDelete&id=<?php echo $i['id']; ?>&ajax=true" data-toggle="popover" data-placement="top" data-content="Delete Address"><i class="material-icons">delete</i></button>
                             </div>
                         </div>
                     </div>
                 <?php endforeach; ?>
+                </div>
             <?php endif; ?>
             <button data-toggle="ajaxModal" type="button" class="btn btn-default" href="?controller=address&action=newAddressModal&ajax=true">Add An Address</button>
          </div>

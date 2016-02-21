@@ -39,6 +39,10 @@ function call($controller, $action)
             require_once('models/studentContact.php');
             $controller = new ContactController();
             break;
+        case 'phone':
+            require_once('models/phone.php');
+            $controller = new PhoneController();
+            break;
     }
     $controller->{$action}();
 }
@@ -73,6 +77,14 @@ $controllers = array(
         'delete'],
     'contact' => [
         'viewContact'
+        ],
+    'phone' => [
+        'newPhoneModal',
+        'newPhone',
+        'addPhone',
+        'getPhone',
+        'confirmDelete',
+        'delete'
         ]);
   if (array_key_exists($controller, $controllers)) {
       if (in_array($action, $controllers[$controller])) {

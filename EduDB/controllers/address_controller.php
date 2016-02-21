@@ -1,4 +1,8 @@
 <?php
+/**
+ * Controller for Address model objects. Primarily used to load in and process
+ * the modals used to perform CRUD operations on Address db entries.
+ */
 class AddressController {
     public function newAddressModal() {
         include_once('views/identity/modals/addAddress.php');
@@ -41,7 +45,7 @@ class AddressController {
             'identityId' => $_POST['identityId']
         );
         Address::editAddress($address);
-        // Redirects are still stupic!
+        // Redirects are still stupid!
         header("Location: " . $_POST['path']);
     }
 

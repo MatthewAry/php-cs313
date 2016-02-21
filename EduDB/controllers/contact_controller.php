@@ -8,6 +8,8 @@ class ContactController {
             require_once ('models/studentContact.php');
             require_once ('models/identity.php');
             require_once ('models/address.php');
+            require_once ('models/phone.php');
+
             // Get identity of contact
             $identity = Identity::findById($_GET['id']);
             $identity = $identity->getValues();
@@ -16,6 +18,11 @@ class ContactController {
             $addresses = [];
             foreach (Address::findByIdentityId($_GET['id']) as $i) {
                 $addresses[] = $i->getValues();
+            }
+
+            $phoneNumbers = [];
+            foreach (Phone::findByIdentityId($_GET['id']) as $i) {
+                $phoneNumbers[] = $i->getValues();
             }
 
             // Load Contact
@@ -27,7 +34,6 @@ class ContactController {
                 );
             }
             // This individual is a contact for: student identity, relationship type, edit controls
-
             require_once ('views/contact/edit.php');
         }
     }

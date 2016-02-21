@@ -70,8 +70,8 @@
          </div>
       </form>
       <script type="text/javascript">
-          $('#editAddress #state').selectize();
-          $('#editAddress #type').selectize();
+          $('#ajaxModal #state').selectize();
+          $('#ajaxModal #type').selectize();
       </script>
     </div>
   </div>

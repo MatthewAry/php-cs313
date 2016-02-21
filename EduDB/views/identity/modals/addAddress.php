@@ -1,4 +1,4 @@
-  <div class="modal-dialog">
+<div class="modal-dialog">
     <div class="modal-content">
       <form class="form-horizontal" action="?controller=address&action=addAddress" method="post">
          <div class="modal-header">
@@ -70,7 +70,7 @@
       </form>
     </div>
     <script type="text/javascript">
-        $('#addAddress #state').selectize();
-        $('#addAddress #type').selectize();
+        $('#ajaxModal #state').selectize();
+        $('#ajaxModal #type').selectize();
     </script>
-  </div>
+</div>

@@ -181,10 +181,10 @@ class Address
         $db = Db::getInstance();
         $request = $db->prepare('DELETE FROM address WHERE idAddress = :id');
         $request->bindParam(":id", $id, PDO::PARAM_INT);
-        if (!$request->execute()) {
-            return false;
-        } else {
+        if ($request->execute()) {
             return true;
+        } else {
+            return false;
         }
     }
 

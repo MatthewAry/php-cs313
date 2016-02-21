@@ -1,5 +1,4 @@
 <div class="container">
-    <?php print_r($addresses); ?>
     <div class="page-header">
         <h1>View and Modify Student Contact</h1>
     </div>
@@ -73,8 +72,8 @@
                                         <?php endif; ?>
                                     </div>
                                     <div class="col-md-3">
-                                        <a data-toggle="ajaxModal" class='btn btn-sm btn-default' href="?controller=address&action=getAddress&id=<?php echo $i['id']; ?>&ref=student&ajax=true"><i class="material-icons">mode_edit</i> Edit</a>
-                                        <a data-toggle="ajaxModal" class='btn btn-sm' href="?controller=address&action=confirmDelete&id=<?php echo $i['id']; ?>&ref=student&ajax=true" data-toggle="popover" data-placement="top" data-content="Delete Address"><i class="material-icons">delete</i></a>
+                                        <a data-toggle="ajaxModal" class='btn btn-sm btn-default' href="?controller=address&action=getAddress&id=<?php echo $i['id']; ?>&ajax=true"><i class="material-icons">mode_edit</i> Edit</a>
+                                        <a data-toggle="ajaxModal" class='btn btn-sm' href="?controller=address&action=confirmDelete&id=<?php echo $i['id']; ?>&ajax=true" data-toggle="popover" data-placement="top" data-content="Delete Address"><i class="material-icons">delete</i></a>
                                     </div>
                                 </div>
                             </div>
@@ -89,7 +88,36 @@
                 <h2 class="panel-title">Phone Numbers</h2>
             </div>
             <div class="panel-body">
-                I haven't built this yet.
+                <?php if (empty($phoneNumbers)): ?>
+                   <div class="alert alert-dismissible alert-danger">
+                      <button type="button" class="close" data-dismiss="alert">×</button>
+                      No phone numbers were found for this contact.
+                   </div>
+                <?php else: ?>
+                    <div class="list-group">
+                        <?php foreach ($phoneNumbers as $i): ?>
+                            <div class="list-group-item">
+                                <div class="col-md-9">
+                                    <h4><?php echo $i['type']; ?></h4>
+                                    <?php echo $i['number']; ?>
+                                </div>
+                                <div class="col-md-3">
+                                    <button data-toggle="ajaxModal"
+                                    class='btn btn-sm btn-default'
+                                    href="?controller=phone&action=getPhone&id=<?php echo $i['id']; ?>&ajax=true">
+                                        <i class="material-icons">mode_edit</i>
+                                        &nbsp;EDIT</button>
+                                    <button data-toggle="ajaxModal"
+                                    class='btn btn-sm'
+                                    href="?controller=phone&action=confirmDelete&id=<?php echo $i['id']; ?>&ajax=true">
+                                        <i class="material-icons">delete</i>
+                                    </button>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                <?php endif; ?>
+                <button data-toggle="ajaxModal" type="button" class="btn" href="?controller=phone&action=newPhoneModal&ajax=true">Add Phone Number</button>
             </div>
         </div>
         <div class="panel panel-info">
