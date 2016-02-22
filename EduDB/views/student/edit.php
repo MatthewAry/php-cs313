@@ -186,7 +186,7 @@
       <?php else: ?>
       <p>This student has no contacts.</p>
       <?php endif ?>
-      <button class="btn btn-default" type="button" name="button">Add Existing Contact</button>
+      <button class="btn btn-default" data-toggle="ajaxModal" type="button" name="button" href="?controller=identity&action=searchModal&ajax=true">Add Existing Contact</button>
       <button class="btn btn-default" type="button" name="button">Add New Contact</button>
       </div>
    </div>

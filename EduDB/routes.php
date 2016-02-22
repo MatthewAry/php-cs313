@@ -54,7 +54,9 @@ $controllers = array(
         'listRecords',
         'updateImage',
         'updateIdentity',
-        'updateImageModal'
+        'updateImageModal',
+        'search',
+        'searchModal'
     ],
     'school' => [
         'listRecords'],
@@ -76,7 +78,8 @@ $controllers = array(
         'confirmDelete',
         'delete'],
     'contact' => [
-        'viewContact'
+        'viewContact',
+        'linkContact'
         ],
     'phone' => [
         'newPhoneModal',

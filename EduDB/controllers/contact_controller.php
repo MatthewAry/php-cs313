@@ -37,6 +37,15 @@ class ContactController {
             require_once ('views/contact/edit.php');
         }
     }
+
+    public function linkContact() {
+        StudentContact::linkContact($_POST['identityId'], $_POST['search']);
+        header("Location: " . $_POST['path']);
+    }
+
+    public function newContact() {
+        
+    }
 }
 
  ?>

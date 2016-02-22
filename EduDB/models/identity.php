@@ -8,6 +8,7 @@ class Identity
     private $gender;
     private $email;
     private $imageURI;
+    // Student = 1; Teacher = 3; Contact = 2;
     private $type;
 
     public function __construct($id, $first_name, $middle_name, $last_name,
@@ -66,12 +67,37 @@ class Identity
             $identity['id_Image_uri'], $identity['type']);
     }
 
-    public static function search($string, $type) {
-        $db = Db::getInstance();
-        $request = $db->prepare(
-            'SELECT * FROM identity '.
-            'WHERE type = :type'
-        );
+    public static function findByType($type) {
+        if (is_string($type)) {
+            switch ($type) {
+                case 'student':
+                    $type = 1;
+                    break;
+                case 'contact':
+                    $type = 2;
+                    break;
+                case 'teacher':
+                    $type = 3;
+                    break;
+                default:
+                    return false;
+                    break;
+            }
+        }
+        $db = DB::getInstance();
+        $request = $db->prepare('SELECT * FROM identity WHERE type = :type');
+        $request->bindParam(":type", $type, PDO::PARAM_INT);
+        if (!$request->execute()) {
+            return false;
+        }
+        $list = [];
+        foreach ($request->fetchAll() as $i) {
+            $item = new Identity($i['id'], $i['first_name'],
+                $i['middle_name'], $i['last_name'], $i['gender'],
+                $i['email'], $i['id_Image_uri'], $i['type']);
+            $list[] = $item->getValues();
+        }
+        return $list;
     }
 
     // Getter
@@ -103,7 +129,8 @@ class Identity
                 'lName' => $i['lastName'],
                 'gender' => $i['gender'],
                 'email' => $i['email'],
-                'imageURI' => $uri
+                'imageURI' => $uri,
+                'type' => $i['type']
             )
         );
     }
@@ -132,6 +159,9 @@ class Identity
             if (isset($values['imageURI'])) {
                 $queryBuilder[] ='id_Image_uri = :imageURI';
             }
+            if (isset($values['type'])) {
+                $queryBuilder[] ='type = :type';
+            }
             foreach ($queryBuilder as $key => $value) {
                 $query = $query . $value;
                 if (isset($queryBuilder[$key+1])) {
@@ -139,7 +169,6 @@ class Identity
                 } else {
                     $query = $query .' ';
                 }
-
             }
 
             $query = $query . 'WHERE id = :id';
@@ -166,6 +195,9 @@ class Identity
             if (isset($values['imageURI'])) {
                 $request->bindParam(":imageURI", $values['imageURI'], PDO::PARAM_STR);
             }
+            if (isset($values['type'])) {
+                $request->bindParam(":type", $values['type'], PDO::PARAM_INT);
+            }
 
             if(!$request->execute()) {
                 return false;
@@ -176,6 +208,7 @@ class Identity
             return false;
         }
     }
+
 }
 
 ?>

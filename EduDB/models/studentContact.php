@@ -106,6 +106,24 @@ class StudentContact
         $db = Db::getInstance();
         return (int) $db->query('SELECT count(*) FROM student_to_identity')->fetchColumn();
     }
+
+    public static function getTypes() {
+        $db = Db::getInstance();
+        $request = $db->query('SELECT * FROM relationship');
+        if (!$request->execute()) {
+            return false;
+        }
+        $list = [];
+        foreach ($request->fetchAll() as $i) {
+            $list[] = array('id' => $i['idRelationship'], 'name' => $i['Type']);
+        }
+        return $list;
+    }
+
+    public static function linkContact($identityId, $contactId) {
+        $db = Db::getInstance();
+        $request = $db->prepare($query);
+    }
 }
 
 ?>

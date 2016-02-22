@@ -44,7 +44,6 @@
                    $handle->file_overwrite       = true;
                    $handle->process($_SERVER['DOCUMENT_ROOT'] . '/EduDB/imageUploads/' );
                    if ($handle->processed) {
-                       //$code = 'i1'; // Success
                        $handle->clean();
                    } else {
                        $_SESSION['ERROR'] = $handle->error; // Failure
@@ -55,6 +54,11 @@
            header("Location: " . $_POST['path']);
        }
 
+       public function searchModal() {
+           require_once('models/studentContact.php');
+           $names = Identity::findByType(2);
+           $types = StudentContact::getTypes();
+           include_once('views/contact/modals/searchContacts.php');
+       }
    }
-
 ?>
