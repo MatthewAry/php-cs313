@@ -8,9 +8,10 @@ class Identity
     private $gender;
     private $email;
     private $imageURI;
+    private $type;
 
     public function __construct($id, $first_name, $middle_name, $last_name,
-                                $gender, $email, $imageURI)
+                                $gender, $email, $imageURI, $type)
     {
         $this->id = $id;
         $this->first_name = $first_name;
@@ -23,6 +24,7 @@ class Identity
         }
         $this->email = $email;
         $this->imageURI = $imageURI;
+        $this->type = $type;
     }
 
     public static function all($start, $number)
@@ -38,7 +40,8 @@ class Identity
             $list[] = new Identity($identity['id'], $identity['first_name'],
                 $identity['middle_name'],
                 $identity['last_name'], $identity['gender'],
-                $identity['email'], $identity['id_Image_uri']);
+                $identity['email'], $identity['id_Image_uri'],
+                $identity['type']);
         }
         return $list;
     }
@@ -60,7 +63,15 @@ class Identity
         return new Identity($identity['id'], $identity['first_name'],
             $identity['middle_name'], $identity['last_name'],
             $identity['gender'], $identity['email'],
-            $identity['id_Image_uri']);
+            $identity['id_Image_uri'], $identity['type']);
+    }
+
+    public static function search($string, $type) {
+        $db = Db::getInstance();
+        $request = $db->prepare(
+            'SELECT * FROM identity '.
+            'WHERE type = :type'
+        );
     }
 
     // Getter
@@ -72,7 +83,8 @@ class Identity
             'lastName' => $this->last_name,
             'gender' => $this->gender,
             'email' => $this->email,
-            'image' => $this->imageURI);
+            'image' => $this->imageURI,
+            'type' => $this->type);
     }
 
     public function getID() {

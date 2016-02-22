@@ -39,8 +39,12 @@
                      <label for="gender" class="col-md-2 control-label">Gender</label>
                      <div class="col-md-10">
                         <select id="gender" name="gender" class="form-control">
-                           <option value="1"<?php echo ($student['identity']['gender'] == 'Male') ? ' selected' : ''; ?>>Male</option>
-                           <option value="0"<?php echo ($student['identity']['gender'] == 'Female') ? ' selected' : ''; ?>>Female</option>
+                           <option value="1"<?php echo ($student['identity']['gender'] == 'Male') ? ' selected' : ''; ?>>
+                               Male
+                           </option>
+                           <option value="0"<?php echo ($student['identity']['gender'] == 'Female') ? ' selected' : ''; ?>>
+                               Female
+                           </option>
                         </select>
                      </div>
                   </div>
@@ -74,8 +78,12 @@
                                 <?php endif; ?>
                             </div>
                             <div class="col-md-3">
-                                <button data-toggle="ajaxModal" class='btn btn-sm btn-default' href="?controller=address&action=getAddress&id=<?php echo $i['id']; ?>&ajax=true"><i class="material-icons">mode_edit</i> Edit</button>
-                                <button data-toggle="ajaxModal" class='btn btn-sm' href="?controller=address&action=confirmDelete&id=<?php echo $i['id']; ?>&ajax=true" data-toggle="popover" data-placement="top" data-content="Delete Address"><i class="material-icons">delete</i></button>
+                                <button data-toggle="ajaxModal" class='btn btn-sm btn-default' href="?controller=address&action=getAddress&id=<?php echo $i['id']; ?>&ajax=true">
+                                    <i class="material-icons">mode_edit</i> Edit
+                                </button>
+                                <button data-toggle="ajaxModal" class='btn btn-sm' href="?controller=address&action=confirmDelete&id=<?php echo $i['id']; ?>&ajax=true">
+                                    <i class="material-icons">delete</i>
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -167,7 +175,10 @@
             <tr>
                <td><?php echo $i['relationship']; ?></td>
                <td><?php echo $i['identity']['firstName'] . ' ' . $i['identity']['lastName']; ?></td>
-               <td><a class="btn" href="?controller=contact&action=viewContact&id=<?php echo $i['identity']['id']; ?>">View</a></td>
+               <td>
+                   <a class="btn" href="?controller=contact&action=viewContact&id=<?php echo $i['identity']['id']; ?>">View</a>
+                   <button class='btn btn-sm' href=""><i class="material-icons">delete</i></button>
+               </td>
             </tr>
          <?php endforeach; ?>
          </tbody>
@@ -175,6 +186,8 @@
       <?php else: ?>
       <p>This student has no contacts.</p>
       <?php endif ?>
+      <button class="btn btn-default" type="button" name="button">Add Existing Contact</button>
+      <button class="btn btn-default" type="button" name="button">Add New Contact</button>
       </div>
    </div>
 
