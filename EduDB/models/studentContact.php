@@ -4,9 +4,9 @@ class StudentContact
 {
     // A student contact should contain a list of other identities it has a
     // relationship to.
-    const STUDENT_CONTACTS = 1;
-    const CONTACT_STUDENTS = 0;
-    // contact has many students(0) OR student has many contacts(1)
+    const STUDENT_CONTACTS = 2;
+    const CONTACT_STUDENTS = 1;
+    // contact has many students(1) OR student has many contacts(1)
     private $type;
 
     // [n][id, Student_id/Identity_id, Relationship_id, Relationship]
@@ -18,12 +18,12 @@ class StudentContact
 
     public function __construct($type, $relationships, $id)
     {
-        if (!($type == 0 || $type == 1)) {
-            throw new Exception("Type must be 0 or 1.");
+        if (!($type == 1 || $type == 2)) {
+            throw new Exception("Type must be 1 or 2.");
+            $this->$id = $id; // This can be a student ID or an Identity id depending on the type.
         }
         $this->type = $type;
         $this->relationships = $relationships;
-        $this->$id = $id; // This can be a student ID or an Identity id depending on the type.
     }
 
     // For student view only!
@@ -59,7 +59,22 @@ class StudentContact
 
     public static function findById($id)
     {
-
+        $db = Db::getInstance();
+        $request = $db->prepare(
+            'SELECT * FROM student_to_identity '.
+            'WHERE id = :id');
+        $request->bindParam(":id", $id, PDO::PARAM_INT);
+        if (!$request->execute()) {
+            return false;
+        }
+        $response = $request->fetch();
+        $list = array(
+            'id' => $response['id'], // the primary key for the table row of student_to_identity
+            'identityId' => $response['Identity_id'],
+            'studentId' => $response['Student_id'],
+            'relationshipID' => $response['Relationship_id']
+        );
+        return new StudentContact(self::STUDENT_CONTACTS, $list, $id);
     }
 
     public static function findByIdentityId($id) {
@@ -91,14 +106,35 @@ class StudentContact
         return new StudentContact(self::CONTACT_STUDENTS, $relationships, $id);
     }
 
+    public static function findTypeById($id) {
+        $db = Db::getInstance();
+        $request = $db->prepare('SELECT * FROM relationship WHERE idRelationship = :id');
+        $request->bindParam(":id", $id, PDO::PARAM_INT);
+        if (!$request->execute()) {
+            return false;
+        }
+        $response = $request->fetch();
+        return array(
+            'id' => $response['idRelationship'],
+            'type' => $response['Type']
+        );
+    }
+
     public function getValues()
     {
-        return array(
-            'type' => $this->type,
-            'relationships' => $this->relationships,
-            // Depending on the type, the id can belong to a student or to an identity
-            'id' => $this->id
-        );
+        if (isset($this->id)) {
+            return array(
+                'type' => $this->type,
+                'relationships' => $this->relationships,
+                // Depending on the type, the id can belong to a student or to an identity
+                'id' => $this->id
+            );
+        } else {
+            return array(
+                'type' => $this->type,
+                'relationships' => $this->relationships,
+            );
+        }
     }
 
     public static function rowCount()
@@ -141,6 +177,18 @@ class StudentContact
             # code...
         } else {
             // ERROR!!!
+        }
+    }
+
+    public static function unlinkContact($id) {
+        $db = Db::getInstance();
+        $request = $db->prepare(
+            'DELETE FROM student_to_identity '.
+            'WHERE id = :id'
+        );
+        $request->bindParam(":id", $id, PDO::PARAM_INT);
+        if (!$request->execute()) {
+            return false;
         }
     }
 }

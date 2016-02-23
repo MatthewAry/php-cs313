@@ -108,6 +108,7 @@ class Student
         $list = [];
         foreach ($result['relationships'] as $i) {
             $list[] = array(
+                'id' => $i['id'],
                 'relationship' => $i['type'],
                 'identity' => Identity::findById($i['identityID'])->getValues()
             );

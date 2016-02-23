@@ -156,6 +156,16 @@ class ContactController {
 
         header("Location: " . $_POST['path']);
     }
-}
 
+    public function unlinkContactModal() {
+        $info = StudentContact::findById($_GET['id'])->getValues();
+        $contact = Identity::findById($info['relationships']['identityId'])->getValues();
+        include_once('views/contact/modals/deleteRelationship.php');
+    }
+
+    public function unlinkContact() {
+        StudentContact::unlinkContact($_POST['id']);
+        header("Location: ".$_POST['path']);
+    }
+}
  ?>

@@ -83,7 +83,9 @@ $controllers = array(
         'newContactPage',
         'newContact',
         'setRelationship',
-        'updateContact'
+        'updateContact',
+        'unlinkContact',
+        'unlinkContactModal'
         ],
     'phone' => [
         'newPhoneModal',

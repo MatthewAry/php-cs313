@@ -108,7 +108,7 @@
                <td><?php echo $i['identity']['firstName'] . ' ' . $i['identity']['lastName']; ?></td>
                <td>
                    <a class="btn" href="?controller=contact&action=viewContact&id=<?php echo $i['identity']['id']; ?>">View</a>
-                   <button class='btn btn-sm' href=""><i class="material-icons">delete</i></button>
+                   <button data-toggle="ajaxModal" class='btn btn-sm' href="?controller=contact&action=unlinkContactModal&id=<?php echo $i['id']; ?>&ajax=true"><i class="material-icons">delete</i></button>
                </td>
             </tr>
          <?php endforeach; ?>

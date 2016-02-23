@@ -7,9 +7,9 @@
          </div>
          <div class="modal-body">
              <div class="row">
-                 <label for="identity" class="col-md-3 control-label">Search</label>
+                 <label for="identityId" class="col-md-3 control-label">Search</label>
                  <div class="col-md-9">
-                    <select id="identity" name="identity" class="form-control" placeholder="Type to search">
+                    <select id="identity" name="identityId" class="form-control" placeholder="Type to search">
                        <option value="">Type to Search</option>
                        <?php foreach ($names as $i): ?>
                        <option value="<?php echo $i['id']; ?>"><?php echo $i['firstName'] . ' ' . $i['middleName'] . ' ' . $i['lastName'] . ': ' . $i['email']; ?></option>
@@ -30,7 +30,6 @@
              </div>
          </div>
          <div class="modal-footer">
-           <input type="hidden" name="identityId" value="<?php echo $_POST['identityId']; ?>">
            <input type="hidden" name="studentId" value="<?php echo $_POST['studentId']; ?>">
            <input type="hidden" name="path" value="<?php echo $_POST['path']; ?>">
            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
