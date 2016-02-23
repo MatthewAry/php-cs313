@@ -60,6 +60,8 @@ class StudentController
             $student->loadClassList();
             $student->loadContactList();
             $student = $student->getValues();
+            $identity = $student['identity'];
+            $type = ['label' => 'Student', 'id' => $student['id']];
             // Get grades
             $grades = [];
             foreach (Grade::all() as $i) {
@@ -88,7 +90,7 @@ class StudentController
             'fName' => $_POST['firstName'],
             'mName' => $_POST['middleName'],
             'lName' => $_POST['lastName'],
-            'gender' => $_POST['gender'],
+            'gender' => $_POST['gender']
         );
 
         // Returns if failed

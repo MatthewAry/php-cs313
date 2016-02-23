@@ -1,7 +1,7 @@
 <div class="container">
    <div class="page-header">
       <h1>View and Modify Student</h1>
-      <a type="button" href="?controller=student&action=listStudents" class="btn"><i class="material-icons">keyboard_return</i> Return to Student List</a>
+      <a href="?controller=student&action=listStudents" class="btn"><i class="material-icons">keyboard_return</i> Return to Student List</a>
    </div>
    <form class="form-horizontal" action="?controller=student&action=updateStudent" method="post">
       <div class="panel panel-info">
@@ -10,45 +10,7 @@
          </div>
          <div class="panel-body">
             <div class="row">
-               <div class="col-md-2" style="text-align: center;" >
-                  <img src="<?php echo $student['identity']['image'] ?>" alt="<?php echo $student['identity']['firstName']; ?>
-                  <?php echo $student['identity']['lastName']; ?>">
-                  <button type="button" data-toggle="ajaxModal" href="?controller=identity&action=updateImageModal&ajax=true" class="btn btn-default">Change Image</button>
-               </div>
-               <div class="col-md-10">
-                  <h4>Student ID: <?php echo $student['id']; ?></h4>
-                  <div class="form-group">
-                     <label for="firstName" class="col-md-2 control-label">First Name</label>
-                     <div class="col-md-10">
-                        <input type="text" value="<?php echo $student['identity']['firstName']; ?>" name="firstName" class="form-control">
-                     </div>
-                  </div>
-                  <div class="form-group">
-                     <label for="middleName" class="col-md-2 control-label">Middle Name</label>
-                     <div class="col-md-10">
-                        <input class="form-control" type="text" value="<?php echo $student['identity']['middleName']; ?>" name="middleName">
-                     </div>
-                  </div>
-                  <div class="form-group">
-                     <label for="lastName" class="col-md-2 control-label">Last Name</label>
-                     <div class="col-md-10">
-                        <input class="form-control" type="text" value="<?php echo $student['identity']['lastName']; ?>" name="lastName">
-                     </div>
-                  </div>
-                  <div class="form-group">
-                     <label for="gender" class="col-md-2 control-label">Gender</label>
-                     <div class="col-md-10">
-                        <select id="gender" name="gender" class="form-control">
-                           <option value="1"<?php echo ($student['identity']['gender'] == 'Male') ? ' selected' : ''; ?>>
-                               Male
-                           </option>
-                           <option value="0"<?php echo ($student['identity']['gender'] == 'Female') ? ' selected' : ''; ?>>
-                               Female
-                           </option>
-                        </select>
-                     </div>
-                  </div>
-               </div>
+                <?php include_once('views/identity/partials/editBasicInfo.php'); ?>
             </div>
          </div>
       </div>
@@ -127,37 +89,6 @@
    </form>
    <div class="panel panel-info">
       <div class="panel-heading">
-         <h2 class="panel-title">Assigned Classes</h2>
-      </div>
-      <div class="panel-body">
-         <?php if (isset($student['classList'])): ?>
-             <table class="table table-striped table-hover">
-               <thead>
-                  <tr>
-                      <th>Class Name</th>
-                      <th>Grade Level</th>
-                      <th>Teacher</th>
-                      <th></th>
-                  </tr>
-               </thead>
-               <tbody>
-                  <?php foreach ($student['classList'] as $i): ?>
-                  <tr>
-                       <td><?php echo $i['name']; ?></td>
-                       <td><?php echo $i['grade']['name']; ?></td>
-                       <td><?php echo $i['teacher']['identity']['firstName'] . ' ' . $i['teacher']['identity']['lastName']; ?></td>
-                       <td>Controls will go here</td>
-                  </tr>
-                  <?php endforeach; ?>
-               </tbody>
-             </table>
-         <?php else: ?>
-             <p>This student does not belong to any classes at this school.</p>
-         <?php endif; ?>
-      </div>
-   </div>
-   <div class="panel panel-info">
-      <div class="panel-heading">
          <h2 class="panel-title">Student Contacts</h2>
       </div>
       <div class="panel-body">
@@ -187,10 +118,16 @@
       <p>This student has no contacts.</p>
       <?php endif ?>
       <button class="btn btn-default" data-toggle="ajaxModal" type="button" name="button" href="?controller=identity&action=searchModal&ajax=true">Add Existing Contact</button>
-      <button class="btn btn-default" type="button" name="button">Add New Contact</button>
+      <form style="display:inline;" action="?controller=contact&action=newContactPage" method="post">
+          <input type="hidden" name="firstName" value="<?php echo $student['identity']['firstName']; ?>">
+          <input type="hidden" name="lastName" value="<?php echo $student['identity']['lastName']; ?>">
+          <input type="hidden" name="studentId" value="<?php echo $student['id']; ?>">
+          <input type="hidden" name="identityId" value="<?php echo $student['identity']['id']; ?>">
+          <input type="hidden" name="path" value="<?php echo $_SERVER['REQUEST_URI']; ?>">
+          <button id="newContact" class="btn btn-default" type="submit" name="button">Add New Contact</button>
+      </form>
       </div>
    </div>
-
 </div>
 <script type="text/javascript">
     $('[data-toggle="ajaxModal"]').on('click',
@@ -205,11 +142,13 @@
         $fName = "<?php echo $student['identity']['firstName']; ?>";
         $lName = "<?php echo $student['identity']['lastName']; ?>";
         $identityId = "<?php echo $student['identity']['id']; ?>";
+        $studentId = "<?php echo $type['id']; ?>"
         $path = "<?php echo $_SERVER['REQUEST_URI']; ?>";
         $modal.load($remote, {
             "firstName": $fName,
             "lastName": $lName,
             "identityId": $identityId,
+            "studentId": $studentId,
             "path": $path
         });
       }
@@ -218,7 +157,6 @@
         event.preventDefault();
         $this.parent('.modal').delay(300).remove();
     });
-    $('#gender').selectize();
     $('#grade').selectize();
     $('#school').selectize();
 </script>

@@ -7,9 +7,9 @@
          </div>
          <div class="modal-body">
              <div class="row">
-                 <label for="search" class="col-md-3 control-label">Search</label>
+                 <label for="identity" class="col-md-3 control-label">Search</label>
                  <div class="col-md-9">
-                    <select id="search" name="search" class="form-control" placeholder="Type to search">
+                    <select id="identity" name="identity" class="form-control" placeholder="Type to search">
                        <option value="">Type to Search</option>
                        <?php foreach ($names as $i): ?>
                        <option value="<?php echo $i['id']; ?>"><?php echo $i['firstName'] . ' ' . $i['middleName'] . ' ' . $i['lastName'] . ': ' . $i['email']; ?></option>
@@ -18,9 +18,9 @@
                  </div>
              </div>
              <div class="row">
-                 <label for="type" class="col-md-3 control-label">Search</label>
+                 <label for="relationship" class="col-md-3 control-label">Search</label>
                  <div class="col-md-9">
-                    <select id="type" name="type" class="form-control" placeholder="Define Relationship">
+                    <select id="relationship" name="relationship" class="form-control" placeholder="Define Relationship">
                         <option value="">Define Relationship</option>
                        <?php foreach ($types as $i): ?>
                        <option value="<?php echo $i['id']; ?>"><?php echo $i['name']; ?></option>
@@ -31,6 +31,7 @@
          </div>
          <div class="modal-footer">
            <input type="hidden" name="identityId" value="<?php echo $_POST['identityId']; ?>">
+           <input type="hidden" name="studentId" value="<?php echo $_POST['studentId']; ?>">
            <input type="hidden" name="path" value="<?php echo $_POST['path']; ?>">
            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
            <button type="submit" name="Submit" value="add" class="btn btn-info btn-raised">Add</button>
@@ -38,11 +39,11 @@
       </form>
     </div>
 <script type="text/javascript">
-$('#search').selectize({
+$('#identity').selectize({
     create: true,
     sortField: 'text'
 });
-$('#type').selectize({
+$('#relationship').selectize({
     create: true,
     sortField: 'text'
 });

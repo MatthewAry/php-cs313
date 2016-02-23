@@ -18,13 +18,17 @@ class Identity
         $this->first_name = $first_name;
         $this->middle_name = $middle_name;
         $this->last_name = $last_name;
-        if ($gender == true) {
+        if ($gender) {
             $this->gender = 'Male';
         } else {
             $this->gender = 'Female';
         }
         $this->email = $email;
-        $this->imageURI = $imageURI;
+        if (empty($imageURI)) {
+            $this->imageURI = "views/assets/images/default_avatar.jpg";
+        } else {
+            $this->imageURI = $imageURI;
+        }
         $this->type = $type;
     }
 
@@ -156,7 +160,7 @@ class Identity
             if (isset($values['email'])) {
                 $queryBuilder[] ='email = :email';
             }
-            if (isset($values['imageURI'])) {
+            if (isset($values['imageURI']) && $values['imageURI'] != "views/assets/images/default_avatar.jpg") {
                 $queryBuilder[] ='id_Image_uri = :imageURI';
             }
             if (isset($values['type'])) {
@@ -192,13 +196,12 @@ class Identity
             if (isset($values['email'])) {
                 $request->bindParam(":email", $values['email'], PDO::PARAM_STR);
             }
-            if (isset($values['imageURI'])) {
+            if (isset($values['imageURI']) && $values['imageURI'] != "views/assets/images/default_avatar.jpg") {
                 $request->bindParam(":imageURI", $values['imageURI'], PDO::PARAM_STR);
             }
             if (isset($values['type'])) {
                 $request->bindParam(":type", $values['type'], PDO::PARAM_INT);
             }
-
             if(!$request->execute()) {
                 return false;
             } else {
@@ -206,6 +209,88 @@ class Identity
             }
         } else {
             return false;
+        }
+    }
+
+    public static function newIdentity($values) {
+        // This is as bad as it looks since it means tight coupling.
+        $query = 'INSERT INTO identity (';
+        $columns = [];
+        $rValues = [];
+        if (isset($values['fName'])) {
+            $columns[] = 'first_name';
+            $rValues[] =':fName';
+        }
+        if (isset($values['mName'])) {
+            $columns[] = 'middle_name';
+            $rValues[] =':mName';
+        }
+        if (isset($values['lName'])) {
+            $columns[] = 'last_name';
+            $rValues[] =':lName';
+        }
+        if (isset($values['gender'])) {
+            $columns[] = 'gender';
+            $rValues[] =':gender';
+        }
+        if (isset($values['email'])) {
+            $columns[] = 'email';
+            $rValues[] =':email';
+        }
+        if (isset($values['imageURI']) && $values['imageURI'] != "views/assets/images/default_avatar.jpg") {
+            $columns[] = 'id_Image_uri';
+            $rValues[] =':imageURI';
+        }
+        if (isset($values['type'])) {
+            $columns[] = 'type';
+            $rValues[] =':type';
+        }
+        foreach ($columns as $key => $value) {
+            $query = $query . $value;
+            if (isset($columns[$key+1])) {
+                $query = $query .', ';
+            } else {
+                $query = $query .') VALUES (';
+            }
+        }
+        foreach ($rValues as $key => $value) {
+            $query = $query . $value;
+            if (isset($rValues[$key+1])) {
+                $query = $query .', ';
+            } else {
+                $query = $query .')';
+            }
+        }
+
+        $db = Db::getInstance();
+        $request = $db->prepare($query);
+
+        if (isset($values['fName'])) {
+            $request->bindParam(":fName", $values['fName'], PDO::PARAM_STR);
+        }
+        if (isset($values['mName'])) {
+            $request->bindParam(":mName", $values['mName'], PDO::PARAM_STR);
+        }
+        if (isset($values['lName'])) {
+            $request->bindParam(":lName", $values['lName'], PDO::PARAM_STR);
+        }
+        if (isset($values['gender'])) {
+            $request->bindParam(":gender", $values['gender'], PDO::PARAM_BOOL);
+        }
+        if (isset($values['email'])) {
+            $request->bindParam(":email", $values['email'], PDO::PARAM_STR);
+        }
+        if (isset($values['imageURI']) && $values['imageURI'] != "views/assets/images/default_avatar.jpg") {
+            $request->bindParam(":imageURI", $values['imageURI'], PDO::PARAM_STR);
+        }
+        if (isset($values['type'])) {
+            $request->bindParam(":type", $values['type'], PDO::PARAM_INT);
+        }
+
+        if(!$request->execute()) {
+            return false;
+        } else {
+            return $db->lastInsertId();
         }
     }
 

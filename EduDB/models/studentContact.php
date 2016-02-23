@@ -120,9 +120,28 @@ class StudentContact
         return $list;
     }
 
-    public static function linkContact($identityId, $contactId) {
+    public static function linkContact($identityId, $contactId, $relationshipId) {
         $db = Db::getInstance();
+        $query = "INSERT INTO student_to_identity ".
+                 "(Identity_id, Student_id, Relationship_id) VALUES ".
+                 "(:identity, :contact, :relationship)";
         $request = $db->prepare($query);
+        $request->bindParam(":identity", $identityId, PDO::PARAM_INT);
+        $request->bindParam(":contact", $contactId,PDO::PARAM_INT);
+        $request->bindParam(":relationship", $relationshipId,PDO::PARAM_INT);
+        $id = $request->execute();
+        if (!$id) {
+            return false;
+        }
+        return $id;
+    }
+
+    public static function updateContact($values) {
+        if (isset($values['id'])) {
+            # code...
+        } else {
+            // ERROR!!!
+        }
     }
 }
 

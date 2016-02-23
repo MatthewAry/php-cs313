@@ -7,7 +7,7 @@
          </div>
          <div class="modal-body">
             <div class="row">
-               <?php require_once('views/identity/partials/emptyAddressField.php'); ?>
+               <?php require_once('views/identity/partials/emptyAddressFields.php'); ?>
                <input type="hidden" name="identityId" value="<?php echo $_POST['identityId']; ?>">
                <input type="hidden" name="path" value="<?php echo $_POST['path']; ?>">
             </div>

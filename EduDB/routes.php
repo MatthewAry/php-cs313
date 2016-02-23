@@ -79,7 +79,11 @@ $controllers = array(
         'delete'],
     'contact' => [
         'viewContact',
-        'linkContact'
+        'linkContact',
+        'newContactPage',
+        'newContact',
+        'setRelationship',
+        'updateContact'
         ],
     'phone' => [
         'newPhoneModal',
