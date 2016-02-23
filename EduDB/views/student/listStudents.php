@@ -13,8 +13,8 @@
                <div class="form-group">
                   <label for="schoolID" class="col-md-2 control-label">School</label>
                   <div class="col-md-10">
-                   <select name="schoolID" class="form-control" id="school">
-                       <option>Select One</option>
+                   <select name="schoolID" class="form-control" id="school" placeholder="Select One">
+                       <option value="">Select One</option>
                        <?php foreach ($schoolList as $i):?>
                            <option value="<?php echo $i['id']; ?>"<?php if (isset($schoolName) && $schoolName == $i['name']): ?>selected<?php endif; ?>><?php echo $i['name']; ?></option>
                        <?php endforeach; ?>
@@ -65,7 +65,7 @@
          <?php endif; ?>
       </div>
    </div>
-
+   <a class="btn btn-raised btn-info" href="?controller=student&action=create">Add New Student</a>
 </div>
 <script type="text/javascript">
 $('#school').selectize();

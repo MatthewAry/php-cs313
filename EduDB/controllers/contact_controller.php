@@ -66,6 +66,7 @@ class ContactController {
             'mName' => $_POST['middleName'],
             'lName' => $_POST['lastName'],
             'gender' => $_POST['gender'],
+            'email' => $_POST['email'],
             'type' => 2
         );
 
@@ -135,6 +136,8 @@ class ContactController {
             StudentContact::linkContact($_POST['identityId'],
                                         $_POST['studentId'],
                                         $_POST['relationship']);
+
+            header("Location: ".$_POST['path']);
         }
     }
 

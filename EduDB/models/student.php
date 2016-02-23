@@ -178,6 +178,59 @@ class Student
         $db = Db::getInstance();
         return (int) $db->query('SELECT count(*) FROM student')->fetchColumn();
     }
+
+    public static function newStudent($values) {
+        // This is as bad as it looks since it means tight coupling.
+        $query = 'INSERT INTO student (';
+        $columns = [];
+        $rValues = [];
+        if (isset($values['gradeId'])) {
+            $columns[] = 'Grade_id';
+            $rValues[] =':gradeId';
+        }
+        if (isset($values['identityId'])) {
+            $columns[] = 'Identity_id';
+            $rValues[] =':identityId';
+        }
+        if (isset($values['schoolId'])) {
+            $columns[] = 'School_id';
+            $rValues[] =':schoolId';
+        }
+        foreach ($columns as $key => $value) {
+            $query = $query . $value;
+            if (isset($columns[$key+1])) {
+                $query = $query .', ';
+            } else {
+                $query = $query .') VALUES (';
+            }
+        }
+        foreach ($rValues as $key => $value) {
+            $query = $query . $value;
+            if (isset($rValues[$key+1])) {
+                $query = $query .', ';
+            } else {
+                $query = $query .')';
+            }
+        }
+
+        $db = Db::getInstance();
+        $request = $db->prepare($query);
+
+        if (isset($values['gradeId'])) {
+            $request->bindParam(":gradeId", $values['gradeId'], PDO::PARAM_STR);
+        }
+        if (isset($values['identityId'])) {
+            $request->bindParam(":identityId", $values['identityId'], PDO::PARAM_STR);
+        }
+        if (isset($values['schoolId'])) {
+            $request->bindParam(":schoolId", $values['schoolId'], PDO::PARAM_STR);
+        }
+        if(!$request->execute()) {
+            return false;
+        } else {
+            return $db->lastInsertId();
+        }
+    }
 }
 
 ?>

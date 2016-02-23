@@ -113,4 +113,70 @@ class StudentController
 
         header("Location: " . $_POST['path']);
     }
+
+    public function addStudent() {
+        $identity = array(
+            'fName' => $_POST['firstName'],
+            'mName' => $_POST['middleName'],
+            'lName' => $_POST['lastName'],
+            'gender' => $_POST['gender'],
+            'email' => $_POST['email'],
+            'type' => 1
+        );
+
+        $studentIdentityId = Identity::newIdentity($identity);
+        if (!$studentIdentityId) {
+            $_SESSION['Error'] = "Unable to create Student Identity!";
+            header("Location: " . $_POST['path']); // TODO: This should go to an error page.
+            return false;
+        }
+
+        require_once('helpers/upload.php');
+        $code = '';
+        if ($studentIdentityId) {
+            $id = intval($studentIdentityId);
+            $handle = new upload($_FILES['image_field']);
+            if ($handle->uploaded) {
+                $handle->file_new_name_body   = $id;
+                $handle->image_resize         = true;
+                $handle->image_x              = 100;
+                $handle->image_ratio_y        = true;
+                $handle->file_overwrite       = true;
+                $handle->process($_SERVER['DOCUMENT_ROOT'] . '/EduDB/imageUploads/' );
+                if ($handle->processed) {
+                    $handle->clean();
+                } else {
+                    $_SESSION['ERROR'] = $handle->error; // Failure
+                }
+            }
+            Identity::updateImage($id, '/EduDB/imageUploads/'.$handle->file_dst_name);
+        }
+
+        $student = array(
+            'gradeId' => $_POST['grade'],
+            'identityId' => $studentIdentityId,
+            'schoolId' => $_POST['school']
+        );
+
+        $sId = Student::newStudent($student);
+        if (!$sId) {
+            $_SESSION['Error'] = "Unable to update Student!";
+        }
+
+        header("Location: ?controller=student&action=viewStudent&id=$sId");
+    }
+
+    public function create() {
+        // Get grades
+        $grades = [];
+        foreach (Grade::all() as $i) {
+            $grades[] = $i->getValues();
+        }
+        // Get Schools
+        $schools = [];
+        foreach (School::all() as $i) {
+            $schools[] = $i->getValues();
+        }
+        include_once('views/student/create.php');
+    }
 }

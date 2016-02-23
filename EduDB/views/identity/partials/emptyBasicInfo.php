@@ -1,6 +1,6 @@
 <div class="col-md-2" style="text-align: center;" >
-   <img src="views/assets/images/default_avatar.jpg" alt="Placeholder" id="img" style="width: 100px; height: 100px;">
-   <div class="fileUpload btn">
+   <img src="views/assets/images/default_avatar.jpg" alt="Placeholder" id="img" style="width: 100px; height: auto;">
+   <div class="fileUpload btn btn-sm">
        <span>Add Image</span>
        <input type="file" id="imgInp" name="image_field" class="upload" />
    </div>
@@ -27,13 +27,10 @@
    <div class="form-group">
       <label for="gender" class="col-md-2 control-label">Gender</label>
       <div class="col-md-10">
-         <select id="gender" name="gender" class="form-control">
-            <option value="1">
-                Male
-            </option>
-            <option value="0">
-                Female
-            </option>
+         <select id="gender" name="gender" class="form-control" placeholder="Set Gender">
+            <option value="">Set Gender</option>
+            <option value="1">Male</option>
+            <option value="0">Female</option>
          </select>
       </div>
    </div>
@@ -45,7 +42,6 @@
    </div>
 </div>
 <script type="text/javascript">
-
     function readURL(input) {
         if (input.files && input.files[0]) {
             var reader = new FileReader();

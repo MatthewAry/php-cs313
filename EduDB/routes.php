@@ -64,7 +64,9 @@ $controllers = array(
         'listStudentContacts',
         'listStudents',
         'viewStudent',
-        'updateStudent'
+        'updateStudent',
+        'create',
+        'addStudent'
     ],
     'sclass' => [
         'listClasses', 'viewClass'],
